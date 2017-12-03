@@ -36,7 +36,7 @@ if ( ! defined( 'MSLS_PLUGIN_VERSION' ) ) {
 	define( 'MSLS_PLUGIN_VERSION', '1.1' );
 
 	if ( ! defined( 'MSLS_PLUGIN_PATH' ) ) {
-		define( 'MSLS_PLUGIN_PATH', plugin_basename( __FILE__ ) );
+		define( 'MSLS_PLUGIN_PATH', ( function_exists( 'plugin_dir_path' ) ? plugin_dir_path( __FILE__ ) : __DIR__ . '/' ) );
 	}
 	if ( ! defined( 'MSLS_PLUGIN__FILE__' ) ) {
 		define( 'MSLS_PLUGIN__FILE__', __FILE__ );
@@ -87,7 +87,9 @@ if ( ! defined( 'MSLS_PLUGIN_VERSION' ) ) {
 
 	}
 
-	register_uninstall_hook( __FILE__, array( 'MslsPlugin', 'uninstall' ) );
+	if ( function_exists( 'register_uninstall_hook' ) ) {
+		register_uninstall_hook( __FILE__, array( 'MslsPlugin', 'uninstall' ) );
+	}
 
 	if ( function_exists( 'is_multisite' ) && is_multisite() ) {
 		add_action( 'widgets_init', array( 'MslsPlugin', 'init_widget' ) );
