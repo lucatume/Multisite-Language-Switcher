@@ -14,5 +14,8 @@
   "keywords" : [ "multilingual", "multisite", "language", "switcher", "international", "localization", "i18n" ],
   "type" : "wordpress-plugin",
   "license" : "GPLv2",
-  "homepage" : "http://msls.co"
+  "homepage" : "http://msls.co",
+  "require-dev": {
+    "10up/wp_mock": "0.2.0"
+  }
 }
