@@ -31,9 +31,9 @@ class Link extends GetSet {
 	public static function get_types() {
 		return array(
 			'Link',
-			'MslsLinkTextOnly',
-			'MslsLinkImageOnly',
-			'MslsLinkTextImage',
+			'LinkTextOnly',
+			'LinkImageOnly',
+			'LinkTextImage',
 		);
 	}
 

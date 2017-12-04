@@ -1,6 +1,6 @@
 <?php
 /**
- * MslsLinkImageOnly
+ * LinkTextOnly
  * @author Dennis Ploetner <re@lloc.de>
  * @since 0.9.8
  */
@@ -8,23 +8,23 @@
 namespace realloc\Msls;
 
 /**
- * Link type: Image only
+ * Link type: Text only
  * @package Msls
  */
-class MslsLinkImageOnly extends Link {
+class LinkTextOnly extends Link {
 
 	/**
 	 * Output format
 	 * @var string
 	 */
-	protected $format_string = '<img src="{src}" alt="{alt}"/>';
+	protected $format_string = '{txt}';
 
 	/**
 	 * Get the description
 	 * @return string
 	 */
 	public static function get_description() {
-		return __( 'Flag only', 'multisite-language-switcher' );
+		return __( 'Description only', 'multisite-language-switcher' );
 	}
 
 }

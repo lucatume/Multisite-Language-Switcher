@@ -2,7 +2,7 @@
 /**
  * GetSet
  * @author Dennis Ploetner <re@lloc.de>
- * @since 0.9.8
+ * @since 2.0
  */
 
 namespace realloc\Msls;
