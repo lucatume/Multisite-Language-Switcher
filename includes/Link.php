@@ -53,16 +53,20 @@ class Link extends GetSet {
 	 */
 	public static function get_types_description() {
 		$types = array();
+
 		foreach ( self::get_types() as $key => $class ) {
 			$types[ $key ] = call_user_func(
-				array( $class, 'get_description' )
+				array( __NAMESPACE__ . '\\' . $class, 'get_description' )
 			);
 		}
+
 		return $types;
 	}
 
 	/**
 	 * Factory: Creates a specific instance of Link
+	 *
+	 * @codeCoverageIgnore
 	 *
 	 * @param int $display
 	 *
@@ -83,10 +87,12 @@ class Link extends GetSet {
 				return $obj;
 			}
 		}
+
 		$types = self::get_types();
 		if ( ! in_array( $display, array_keys( $types ), true ) ) {
 			$display = 0;
 		}
+
 		return new $types[ $display ];
 	}
 
