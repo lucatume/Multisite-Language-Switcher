@@ -5,6 +5,8 @@
  * @since 0.9.8
  */
 
+namespace realloc\Msls;
+
 /**
  * Handles backend icons for taxonomies
  * @package Msls

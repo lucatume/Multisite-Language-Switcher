@@ -5,11 +5,13 @@
  * @since 0.9.8
  */
 
+namespace realloc\Msls;
+
 /**
  * Content types: Taxonomies (Tags, Categories, ...)
  * @package Msls
  */
-class MslsTaxonomy extends MslsContentTypes implements IMslsRegistryInstance {
+class MslsTaxonomy extends MslsContentTypes implements RegistryInstance {
 
 	/**
 	 * Post type

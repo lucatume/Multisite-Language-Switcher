@@ -5,14 +5,14 @@
  * @since 0.9.8
  */
 
+namespace realloc\Msls;
+
 /**
  * Collection of blog-objects
  *
- * Implements the interface IMslsRegistryInstance because we want to
- * work with a singleton instance of MslsBlogCollection all the time.
  * @package Msls
  */
-class MslsBlogCollection implements IMslsRegistryInstance {
+class MslsBlogCollection implements RegistryInstance {
 
 	/**
 	 * ID of the current blog
@@ -238,12 +238,18 @@ class MslsBlogCollection implements IMslsRegistryInstance {
 
 	/**
 	 * Gets an array of all - but not the current - blog-objects
+	 *
 	 * @return array
 	 */
 	public function get() {
-		$objects = $this->get_objects();
-		if ( $this->has_current_blog() ) {
-			unset( $objects[ $this->current_blog_id ] );
+		static $objects = null;
+
+		if ( is_null( $objects ) ) {
+			$objects = $this->get_objects();
+
+			if ( $this->has_current_blog() ) {
+				unset( $objects[ $this->current_blog_id ] );
+			}
 		}
 
 		return $objects;

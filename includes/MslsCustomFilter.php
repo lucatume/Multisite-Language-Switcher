@@ -6,6 +6,8 @@
  * @since 0.9.9
  */
 
+namespace realloc\Msls;
+
 /**
  * Adding custom filter to posts/pages table.
  * @package Msls
@@ -13,20 +15,23 @@
 class MslsCustomFilter extends MslsMain {
 
 	/**
-	 * Init
+	 * Init hooks
+	 *
+	 * @codeCoverageIgnore
+	 *
 	 * @return MslsCustomFilter
 	 */
-	public static function init() {
-		$obj     = new self();
-		$options = MslsOptions::instance();
-		if ( ! $options->is_excluded() ) {
+	public function init_hooks() {
+		if ( ! $this->options->is_excluded() ) {
 			$post_type = MslsPostType::instance()->get_request();
+
 			if ( ! empty( $post_type ) ) {
-				add_action( 'restrict_manage_posts', array( $obj, 'add_filter' ) );
-				add_filter( 'parse_query',           array( $obj, 'execute_filter' ) );
+				add_action( 'restrict_manage_posts', array( $this, 'add_filter' ) );
+				add_filter( 'parse_query',           array( $this, 'execute_filter' ) );
 			}
 		}
-		return $obj;
+
+		return $this;
 	}
 
 	/**
@@ -40,7 +45,7 @@ class MslsCustomFilter extends MslsMain {
 			''
 		);
 
-		$blogs = MslsBlogCollection::instance()->get();
+		$blogs = $this->collection->get();
 		if ( $blogs ) {
 			echo '<select name="msls_filter" id="msls_filter">';
 			echo '<option value="">' . esc_html( __( 'Show all blogs', 'multisite-language-switcher' ) ) . '</option>';
@@ -61,8 +66,8 @@ class MslsCustomFilter extends MslsMain {
 	 * @param WP_Query $query
 	 * @return false or WP_Query object
 	 */
-	public function execute_filter( WP_Query $query ) {
-		$blogs = MslsBlogCollection::instance()->get();
+	public function execute_filter( \WP_Query $query ) {
+		$blogs = $this->collection->get();
 
 		if ( ! filter_has_var( INPUT_GET, 'msls_filter' ) ) {
 			return false;
@@ -87,8 +92,10 @@ class MslsCustomFilter extends MslsMain {
 				$exclude_ids[] = substr( $post->option_name, 5 );
 			}
 			$query->query_vars['post__not_in'] = $exclude_ids;
+
 			return $query;
 		}
+
 		return false;
 	}
 

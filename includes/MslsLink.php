@@ -6,6 +6,8 @@
  * @since 0.9.8
  */
 
+namespace realloc\Msls;
+
 /**
  * Link type: Image and text
  * @package Msls

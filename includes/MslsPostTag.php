@@ -5,11 +5,40 @@
  * @since 0.9.8
  */
 
+namespace realloc\Msls;
+
 /**
  * Post Tag
  * @package Msls
  */
 class MslsPostTag extends MslsMain {
+
+	/**
+	 * Init
+	 *
+	 * @return MslsPostTag
+	 */
+	public static function init() {
+		$options = MslsOptions::instance();
+		$blogs   = MslsBlogCollection::instance();
+
+		if ( $options->activate_autocomplete	) {
+			$obj     = new self( $options, $blogs );
+		}
+		else {
+			$obj = new MslsPostTagClassic( $options, $blogs );
+		}
+
+		$taxonomy = MslsContentTypes::create()->acl_request();
+		if ( '' != $taxonomy ) {
+			add_action( "{$taxonomy}_add_form_fields",  array( $obj, 'add_input' ) );
+			add_action( "{$taxonomy}_edit_form_fields", array( $obj, 'edit_input' ) );
+			add_action( "edited_{$taxonomy}", array( $obj, 'set' ) );
+			add_action( "create_{$taxonomy}", array( $obj, 'set' ) );
+		}
+
+		return $obj;
+	}
 
 	/**
 	 * Suggest
@@ -64,30 +93,8 @@ class MslsPostTag extends MslsMain {
 	}
 
 	/**
-	 * Init
-	 * @return MslsPostTag
-	 */
-	public static function init() {
-		if ( MslsOptions::instance()->activate_autocomplete	) {
-			$obj = new self();
-		}
-		else {
-			$obj = MslsPostTagClassic::init();
-		}
-
-		$taxonomy = MslsContentTypes::create()->acl_request();
-		if ( '' != $taxonomy ) {
-			add_action( "{$taxonomy}_add_form_fields",  array( $obj, 'add_input' ) );
-			add_action( "{$taxonomy}_edit_form_fields", array( $obj, 'edit_input' ) );
-			add_action( "edited_{$taxonomy}", array( $obj, 'set' ) );
-			add_action( "create_{$taxonomy}", array( $obj, 'set' ) );
-		}
-
-		return $obj;
-	}
-
-	/**
 	 * Add the input fields to the add-screen of the taxonomies
+	 *
 	 * @param StdClass $tag
 	 */
 	public function add_input( $tag ) {

@@ -5,8 +5,11 @@
  * @since 0.9.8
  */
 
+namespace realloc\Msls;
+
 /**
  * Provides functionalities for general hooks and activation/deactivation
+ *
  * @package Msls
  */
 class MslsPlugin {

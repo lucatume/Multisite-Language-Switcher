@@ -5,11 +5,13 @@
  * @since 0.9.8
  */
 
+namespace realloc\Msls;
+
 /**
  * Content types: Post types (Pages, Posts, ...)
  * @package Msls
  */
-class MslsPostType extends MslsContentTypes implements IMslsRegistryInstance {
+class MslsPostType extends MslsContentTypes implements RegistryInstance {
 
 	/**
 	 * Constructor

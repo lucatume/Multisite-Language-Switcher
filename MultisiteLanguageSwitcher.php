@@ -44,49 +44,6 @@ if ( ! defined( 'MSLS_PLUGIN_VERSION' ) ) {
 
 	add_action( 'plugins_loaded', array( 'MslsPlugin', 'init_i18n_support' ) );
 
-	/**
-	 * The Autoloader does all the magic when it comes to include a file
-	 * @since 0.9.8
-	 * @package Msls
-	 */
-	class MslsAutoloader {
-
-		/**
-		 * Static loader method
-		 * @param string $class
-		 */
-		public static function load( $class ) {
-			if ( 'Msls' == substr( $class, 0, 4 ) ) {
-				require_once dirname( __FILE__ ) . "/includes/{$class}.php";
-			}
-		}
-
-	}
-
-	/**
-	 * The autoload-stack could be inactive so the function will return false
-	 */
-	if ( in_array( '__autoload', (array) spl_autoload_functions() ) ) {
-		spl_autoload_register( '__autoload' );
-	}
-	spl_autoload_register( array( 'MslsAutoloader', 'load' ) );
-
-	/**
-	 * Interface for classes which are to register in the MslsRegistry-instance
-	 *
-	 * get_called_class is just avalable in php >= 5.3 so I defined an interface here
-	 * @package Msls
-	 */
-	interface IMslsRegistryInstance {
-
-		/**
-		 * Returnse an instance
-		 * @return object
-		 */
-		public static function instance();
-
-	}
-
 	if ( function_exists( 'register_uninstall_hook' ) ) {
 		register_uninstall_hook( __FILE__, array( 'MslsPlugin', 'uninstall' ) );
 	}

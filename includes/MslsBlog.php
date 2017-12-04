@@ -5,6 +5,8 @@
  * @since 0.9.8
  */
 
+namespace realloc\Msls;
+
 /**
  * Internal representation of a blog
  * @property int $userblog_id

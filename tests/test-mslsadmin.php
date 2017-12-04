@@ -6,29 +6,30 @@
  * @package Msls
  */
 
+use realloc\Msls\MslsAdmin;
+
 /**
  * WP_Test_MslsAdmin
  */
 class WP_Test_MslsAdmin extends Msls_UnitTestCase {
 
-	/**
-	 * Get a test object
-	 */
-	function get_test() {
-		$options = $mock = \Mockery::mock( 'MslsOptions' );
-		$obj     = new MslsAdmin( $options );
+	function get_test( array $retval = [] ) {
+		$options    = \Mockery::mock( 'realloc\Msls\MslsOptions' );
+		$collection = \Mockery::mock( 'realloc\Msls\MslsBlogCollection' );
 
-		return $obj;
+		return new MslsAdmin( $options, $collection );
 	}
 
 	/**
 	 * Verify the has_problems-method
 	 */
 	function test_has_problems() {
-		$options = $mock = \Mockery::mock( 'MslsOptions' );
+		$options = \Mockery::mock( 'realloc\Msls\MslsOptions' );
 		$options->shouldReceive( 'get_available_languages' )->once()->andReturn( array( 'x' ) );
 
-		$obj = new MslsAdmin( $options );
+		$collection = \Mockery::mock( 'realloc\Msls\MslsBlogCollection' );
+
+		$obj = new MslsAdmin( $options, $collection );
 
 		$this->expectOutputRegex( '/^<div id="msls-warning" class="updated fade"><p>.*$/' );
 		$retval = $obj->has_problems();
@@ -39,21 +40,28 @@ class WP_Test_MslsAdmin extends Msls_UnitTestCase {
 	/**
 	 * Verify the subsubsub-method
 	 */
-	function test_subsubsub() {
-		\WP_Mock::passthruFunction( 'has_filter', [ 'times' => 1 ] );
-		\WP_Mock::userFunction( 'get_current_blog_id', [ 'times' => 1, 'returns' => 1 ] );
-		\WP_Mock::userFunction( 'get_blogs_of_user', [ 'times' => 1, 'returns' => [ 1, 2, 3 ] ] );
+	function test_subsubsub_no_plugin_active_blogs() {
+		$options    = \Mockery::mock( 'realloc\Msls\MslsOptions' );
+		$collection = \Mockery::mock( 'realloc\Msls\MslsBlogCollection' );
+		$collection->shouldReceive( 'get_plugin_active_blogs' )->once()->andReturn( [] );
 
-		$obj = $this->get_test();
+		$obj = new MslsAdmin( $options, $collection );
 
-		$this->assertInternalType( 'string', $obj->subsubsub() );
+		$this->assertEquals( '', $obj->subsubsub() );
 	}
+
 
 	/**
 	 * Verify the blog_language-method
 	 */
 	function test_blog_language() {
-		$obj = $this->get_test();
+		\WP_Mock::userFunction( 'selected', [ 'returns' => '' ] );
+
+		$options    = \Mockery::mock( 'realloc\Msls\MslsOptions' );
+		$options->shouldReceive( 'get_available_languages' )->once()->andReturn( [ 'de_DE', 'it_IT' ] );
+		$collection = \Mockery::mock( 'realloc\Msls\MslsBlogCollection' );
+
+		$obj = new MslsAdmin( $options, $collection );
 
 		$this->expectOutputRegex( '/^<select id="blog_language" name="msls\[blog_language\]">.*$/' );
 		$obj->blog_language();
@@ -63,27 +71,27 @@ class WP_Test_MslsAdmin extends Msls_UnitTestCase {
 	 * Verify the admin_language-method
 	 */
 	function test_admin_language() {
-		$obj = $this->get_test();
+		\WP_Mock::userFunction( 'selected', [ 'returns' => '' ] );
+
+		$options    = \Mockery::mock( 'realloc\Msls\MslsOptions' );
+		$options->shouldReceive( 'get_available_languages' )->once()->andReturn( [ 'de_DE', 'it_IT' ] );
+		$collection = \Mockery::mock( 'realloc\Msls\MslsBlogCollection' );
+
+		$obj = new MslsAdmin( $options, $collection );
 
 		$this->expectOutputRegex( '/^<select id="admin_language" name="msls\[admin_language\]">.*$/' );
 		$obj->admin_language();
 	}
 
 	/**
-	 * Verify the display-method
-	 */
-	function test_display() {
-		$obj = $this->get_test();
-
-		$this->expectOutputRegex( '/^<select id="display" name="msls\[display\]">.*$/' );
-		$obj->display();
-	}
-
-	/**
 	 * Verify the reference_user-method
 	 */
 	function test_reference_user() {
-		$obj = $this->get_test();
+		$options    = \Mockery::mock( 'realloc\Msls\MslsOptions' );
+		$collection = \Mockery::mock( 'realloc\Msls\MslsBlogCollection' );
+		$collection->shouldReceive( 'get_users' )->once()->andReturn( [] );
+
+		$obj = new MslsAdmin( $options, $collection );
 
 		$this->expectOutputRegex( '/^<select id="reference_user" name="msls\[reference_user\]">.*$/' );
 		$obj->reference_user();
@@ -93,6 +101,8 @@ class WP_Test_MslsAdmin extends Msls_UnitTestCase {
 	 * Verify the activate_autocomplete-method
 	 */
 	function test_activate_autocomplete() {
+		\WP_Mock::userFunction( 'checked', [ 'returns' => '' ] );
+
 		$obj = $this->get_test();
 
 		$this->expectOutputString( '<input type="checkbox" id="activate_autocomplete" name="msls[activate_autocomplete]" value="1" />' );
@@ -103,6 +113,8 @@ class WP_Test_MslsAdmin extends Msls_UnitTestCase {
 	 * Verify the sort_by_description-method
 	 */
 	function test_sort_by_description() {
+		\WP_Mock::userFunction( 'checked', [ 'returns' => '' ] );
+
 		$obj = $this->get_test();
 
 		$this->expectOutputString( '<input type="checkbox" id="sort_by_description" name="msls[sort_by_description]" value="1" />' );
@@ -113,6 +125,8 @@ class WP_Test_MslsAdmin extends Msls_UnitTestCase {
 	 * Verify the exclude_current_blog-method
 	 */
 	function test_exclude_current_blog() {
+		\WP_Mock::userFunction( 'checked', [ 'returns' => '' ] );
+
 		$obj = $this->get_test();
 
 		$this->expectOutputString( '<input type="checkbox" id="exclude_current_blog" name="msls[exclude_current_blog]" value="1" />' );
@@ -123,6 +137,8 @@ class WP_Test_MslsAdmin extends Msls_UnitTestCase {
 	 * Verify the only_with_translation-method
 	 */
 	function test_only_with_translation() {
+		\WP_Mock::userFunction( 'checked', [ 'returns' => '' ] );
+
 		$obj = $this->get_test();
 
 		$this->expectOutputString( '<input type="checkbox" id="only_with_translation" name="msls[only_with_translation]" value="1" />' );
@@ -133,6 +149,8 @@ class WP_Test_MslsAdmin extends Msls_UnitTestCase {
 	 * Verify the output_current_blog-method
 	 */
 	function test_output_current_blog() {
+		\WP_Mock::userFunction( 'checked', [ 'returns' => '' ] );
+
 		$obj = $this->get_test();
 
 		$this->expectOutputString( '<input type="checkbox" id="output_current_blog" name="msls[output_current_blog]" value="1" />' );
@@ -152,47 +170,19 @@ class WP_Test_MslsAdmin extends Msls_UnitTestCase {
 	/**
 	 * Verify the before_output-method
 	 */
-	function test_before_output() {
+	function test_magic_text_call() {
 		$obj = $this->get_test();
 
 		$this->expectOutputString( '<input id="before_output" name="msls[before_output]" value="" size="30"/>' );
-		$obj->before_output();
-	}
-
-	/**
-	 * Verify the after_output-method
-	 */
-	function test_after_output() {
-		$obj = $this->get_test();
-
-		$this->expectOutputString( '<input id="after_output" name="msls[after_output]" value="" size="30"/>' );
-		$obj->after_output();
-	}
-
-	/**
-	 * Verify the before_item-method
-	 */
-	function test_before_item() {
-		$obj = $this->get_test();
-
-		$this->expectOutputString( '<input id="before_item" name="msls[before_item]" value="" size="30"/>' );
-		$obj->before_item();
-	}
-
-	/**
-	 * Verify the after_item-method
-	 */
-	function test_after_item() {
-		$obj = $this->get_test();
-
-		$this->expectOutputString( '<input id="after_item" name="msls[after_item]" value="" size="30"/>' );
-		$obj->after_item();
+		$obj->text_before_output();
 	}
 
 	/**
 	 * Verify the content_filter-method
 	 */
 	function test_content_filter() {
+		\WP_Mock::userFunction( 'checked', [ 'returns' => '' ] );
+
 		$obj = $this->get_test();
 
 		$this->expectOutputString( '<input type="checkbox" id="content_filter" name="msls[content_filter]" value="1" />' );
@@ -210,19 +200,11 @@ class WP_Test_MslsAdmin extends Msls_UnitTestCase {
 	}
 
 	/**
-	 * Verify the image_url-method
-	 */
-	function test_image_url() {
-		$obj = $this->get_test();
-
-		$this->expectOutputString( '<input id="image_url" name="msls[image_url]" value="" size="30"/>' );
-		$obj->image_url();
-	}
-
-	/**
 	 * Verify the render_checkbox-method
 	 */
 	function test_render_checkbox() {
+		\WP_Mock::userFunction( 'checked', [ 'returns' => '' ] );
+
 		$obj = $this->get_test();
 
 		$this->assertInternalType( 'string', $obj->render_checkbox( 'test' ) );
@@ -263,6 +245,8 @@ class WP_Test_MslsAdmin extends Msls_UnitTestCase {
 	 * Verify the set_blog_language-method
 	 */
 	function test_set_blog_language() {
+		\WP_Mock::passthruFunction( 'update_option' );
+
 		$obj = $this->get_test();
 
 		$arr = array( 'abc' => true, 'blog_language' => 'it_IT' );

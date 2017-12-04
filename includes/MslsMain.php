@@ -5,19 +5,55 @@
  * @since 0.9.8
  */
 
+namespace realloc\Msls;
+
 /**
  * Abstraction for the hook classes
  * @package Msls
  */
-class MslsMain {
+abstract class MslsMain {
 
 	/**
-	 * Every child of MslsMain has to define a init-method
-	 * @throws Exception If a child class does not define an init method
+	 * @var MslsOptions
+	 * @var MslsBlog[]
+	 */
+	protected
+		$options,
+		$collection;
+
+	/**
+	 * Init
+	 *
 	 * @return MslsMain
 	 */
 	public static function init() {
-		throw new Exception( 'Static method init is not defined' );
+		$options = MslsOptions::instance();
+		$blogs   = MslsBlogCollection::instance();
+		$obj     = new static( $options, $blogs );
+
+		$obj->init_hooks();
+
+		return $obj;
+	}
+
+	/**
+	 * Does soemthing and returns itself
+	 *
+	 * @return $this
+	 */
+	public function init_hooks() {
+		return $this;
+	}
+
+	/**
+	 * MslsCustomColumn constructor.
+	 *
+	 * @param MslsOptions $options
+	 * @param MslsBlogCollection $collection
+	 */
+	public function __construct( MslsOptions $options, MslsBlogCollection $collection ) {
+		$this->options    = $options;
+		$this->collection = $collection;
 	}
 
 	/**
@@ -30,12 +66,14 @@ class MslsMain {
 			if ( is_array( $message ) || is_object( $message ) ) {
 				$message = print_r( $message, true );
 			}
+
 			error_log( 'MSLS Debug: ' . $message );
 		}
 	}
 
 	/**
 	 * Get the input array
+	 *
 	 * @param int $object_id
 	 * @return array
 	 */
@@ -90,9 +128,11 @@ class MslsMain {
 
 	/**
 	 * Save
+	 *
+	 * @codeCoverageIgnore
+	 *
 	 * @param int $object_id
 	 * @param string $class
-	 * @codeCoverageIgnore
 	 */
 	protected function save( $object_id, $class ) {
 		if ( has_action( 'msls_main_save' ) ) {

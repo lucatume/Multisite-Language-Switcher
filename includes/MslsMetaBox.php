@@ -5,11 +5,30 @@
  * @since 0.9.8
  */
 
+namespace realloc\Msls;
+
 /**
  * Meta box for the edit mode of the (custom) post types
  * @package Msls
  */
 class MslsMetaBox extends MslsMain {
+
+	/**
+	 * Init hooks
+	 *
+	 * @codeCoverageIgnore
+	 *
+	 * @return MslsMetaBox
+	 */
+	public function init_hooks() {
+		if ( ! $this->options->is_excluded() ) {
+			add_action( 'add_meta_boxes', array( $this, 'add' ) );
+			add_action( 'save_post', array( $this, 'set' ) );
+			add_action( 'trashed_post', array( $this, 'delete' ) );
+		}
+
+		return $this;
+	}
 
 	/**
 	 * Suggest
@@ -73,21 +92,6 @@ class MslsMetaBox extends MslsMain {
 	}
 
 	/**
-	 * Init
-	 * @return MslsMetaBox
-	 */
-	public static function init() {
-		$obj = new self();
-		if ( ! MslsOptions::instance()->is_excluded() ) {
-			add_action( 'add_meta_boxes', array( $obj, 'add' ) );
-			add_action( 'save_post', array( $obj, 'set' ) );
-			add_action( 'trashed_post', array( $obj, 'delete' ) );
-		}
-
-		return $obj;
-	}
-
-	/**
 	 * Add
 	 */
 	public function add() {
@@ -115,7 +119,7 @@ class MslsMetaBox extends MslsMain {
 	 * @uses selected
 	 */
 	public function render_select() {
-		$blogs = MslsBlogCollection::instance()->get();
+		$blogs = $this->collection->get();
 		if ( $blogs ) {
 			global $post;
 
@@ -219,7 +223,7 @@ class MslsMetaBox extends MslsMain {
 	 * Render the suggest input-field
 	 */
 	public function render_input() {
-		$blogs = MslsBlogCollection::instance()->get();
+		$blogs = $this->collection->get();
 
 		if ( $blogs ) {
 			global $post;

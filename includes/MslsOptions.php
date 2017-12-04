@@ -5,6 +5,8 @@
  * @since 0.9.8
  */
 
+namespace realloc\Msls;
+
 /**
  * General options class
  * @package Msls
@@ -19,7 +21,7 @@
  * @property string $before_output
  * @property string $after_output
  */
-class MslsOptions extends MslsGetSet implements IMslsRegistryInstance {
+class MslsOptions extends MslsGetSet implements RegistryInstance {
 
 	/**
 	 * Args

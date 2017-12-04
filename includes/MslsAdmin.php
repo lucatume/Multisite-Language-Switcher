@@ -5,6 +5,8 @@
  * @since 0.9.8
  */
 
+namespace realloc\Msls;
+
 /**
  * Administration of the options
  * @package Msls
@@ -12,37 +14,24 @@
 class MslsAdmin extends MslsMain {
 
 	/**
-	 * @var MslsOptions $options
-	 */
-	protected $options;
-
-	/**
-	 * MslsAdmin constructor.
-	 */
-	public function __construct( MslsOptions $options ) {
-		$this->options = $options;
-	}
-
-	/**
-	 * Factory
+	 * Init hooks
+	 *
+	 * @codeCoverageIgnore
 	 *
 	 * @return MslsAdmin
 	 */
-	public static function init() {
-		$options = MslsOptions::instance();
-		$obj     = new self( $options );
-
+	public function init_hooks() {
 		if ( current_user_can( 'manage_options' ) ) {
 			$title = __( 'Multisite Language Switcher', 'multisite-language-switcher' );
-			add_options_page( $title, $title, 'manage_options', __CLASS__, array( $obj, 'render' ) );
+			add_options_page( $title, $title, 'manage_options', __CLASS__, array( $this, 'render' ) );
 
-			add_action( 'admin_init', array( $obj, 'register' ) );
-			add_action( 'admin_notices', array( $obj, 'has_problems' ) );
+			add_action( 'admin_init', array( $this, 'register' ) );
+			add_action( 'admin_notices', array( $this, 'has_problems' ) );
 
-			add_filter( 'msls_admin_validate', array( $obj, 'set_blog_language' ) );
+			add_filter( 'msls_admin_validate', array( $this, 'set_blog_language' ) );
 		}
 
-		return $obj;
+		return $this;
 	}
 
 	/**
@@ -56,7 +45,7 @@ class MslsAdmin extends MslsMain {
 	public function __call( $method, $args ) {
 		$parts = explode( '_', $method, 2 );
 		if ( 2 == count( $parts ) ) {
-			switch( $parts[0] ) {
+			switch ( $parts[0] ) {
 				case 'rewrite':
 					return $this->render_rewrite( $parts[1] );
 					break;
@@ -73,15 +62,14 @@ class MslsAdmin extends MslsMain {
 	 */
 	public function has_problems() {
 		$message = '';
-		$options = $this->options;
 
-		if ( 1 == count( $options->get_available_languages() ) ) {
+		if ( 1 == count( $this->options->get_available_languages() ) ) {
 			$message = sprintf(
 				__( 'There are no language files installed. You can <a href="%s">manually install some language files</a> or you could use a <a href="%s">plugin</a> to download these files automatically.' ),
 				esc_url( 'http://codex.wordpress.org/Installing_WordPress_in_Your_Language#Manually_Installing_Language_Files' ),
 				esc_url( 'http://wordpress.org/plugins/wp-native-dashboard/' )
 			);
-		} elseif ( $options->is_empty() ) {
+		} elseif ( $this->options->is_empty() ) {
 			$message = sprintf(
 				__( 'Multisite Language Switcher is almost ready. You must <a href="%s">complete the configuration process</a>.' ),
 				esc_url( admin_url( '/options-general.php?page=MslsAdmin' ) )
@@ -119,25 +107,23 @@ class MslsAdmin extends MslsMain {
 	public function subsubsub() {
 		$arr = array();
 
-		$blogs = MslsBlogCollection::instance();
-		foreach ( $blogs->get_plugin_active_blogs() as $blog ) {
+		foreach ( $this->collection->get_plugin_active_blogs() as $blog ) {
 			$arr[] = sprintf(
 				'<a href="%s"%s>%s / %s</a>',
 				get_admin_url( $blog->userblog_id, '/options-general.php?page=MslsAdmin' ),
-				( $blog->userblog_id == $blogs->get_current_blog_id() ? ' class="current"' : '' ),
+				( $blog->userblog_id == $this->collection->get_current_blog_id() ? ' class="current"' : '' ),
 				$blog->blogname,
 				$blog->get_description()
 			);
 		}
 
-		return (
-		empty( $arr ) ?
-			'' :
-			sprintf(
-				'<ul class="subsubsub"><li>%s</li></ul>',
-				implode( ' | </li><li>', $arr )
-			)
-		);
+		$str = '';
+		if ( ! empty( $arr ) ) {
+			$str = sprintf( '<ul class="subsubsub"><li>%s</li></ul>', implode( ' | </li><li>', $arr ) );
+		}
+
+
+		return $str;
 	}
 
 	/**
@@ -301,7 +287,10 @@ class MslsAdmin extends MslsMain {
 	public function rewrites_section() {
 		foreach ( get_post_types( array( 'public' => true ), 'objects' ) as $key => $object ) {
 			$title = sprintf( __( '%s Slug', 'multisite-language-switcher' ), $object->label );
-			add_settings_field( "rewrite_{$key}", $title, array( $this, "rewrite_{$key}" ), __CLASS__, 'rewrites_section' );
+			add_settings_field( "rewrite_{$key}", $title, array(
+				$this,
+				"rewrite_{$key}"
+			), __CLASS__, 'rewrites_section' );
 		}
 
 		/**
@@ -328,11 +317,10 @@ class MslsAdmin extends MslsMain {
 	 * Shows the select-form-field 'admin_language'
 	 */
 	public function admin_language() {
-		$options = $this->options;
 		echo $this->render_select(
 			'admin_language',
-			$options->get_available_languages(),
-			$options->admin_language
+			$this->options->get_available_languages(),
+			$this->options->admin_language
 		);
 	}
 
@@ -353,7 +341,7 @@ class MslsAdmin extends MslsMain {
 	public function reference_user() {
 		$users = array();
 
-		foreach ( MslsBlogCollection::instance()->get_users() as $user ) {
+		foreach ( $this->collection->get_users() as $user ) {
 			$users[ $user->ID ] = $user->user_nicename;
 		}
 
@@ -361,7 +349,7 @@ class MslsAdmin extends MslsMain {
 	}
 
 	/**
-	 render
+	 * render
 	 *
 	 * You can decide if you want to activate the experimental autocomplete
 	 * input fields in the backend instead of the traditional select-menus.
@@ -456,8 +444,7 @@ class MslsAdmin extends MslsMain {
 		$value = '';
 		if ( true === $rewrite ) {
 			$value = $key;
-		}
-		elseif ( ! empty( $rewrite['slug'] ) ) {
+		} elseif ( ! empty( $rewrite['slug'] ) ) {
 			$value = $rewrite['slug'];
 		}
 
