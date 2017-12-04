@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for MslsGetSet
+ * Tests for GetSet
  *
  * @author Dennis Ploetner <re@lloc.de>
  * @package Msls
@@ -13,11 +13,11 @@ class WP_Test_MslsGetSet extends Msls_UnitTestCase {
 
 	/**
 	 * Verify the is_empty-method
-	 * @covers MslsGetSet::is_empty
-	 * @covers MslsGetSet::__set
-	 * @covers MslsGetSet::__get
-	 * @covers MslsGetSet::__isset
-	 * @covers MslsGetSet::__unset
+	 * @covers GetSet::is_empty
+	 * @covers GetSet::__set
+	 * @covers GetSet::__get
+	 * @covers GetSet::__isset
+	 * @covers GetSet::__unset
 
 	 */
 	function test_is_empty_method() {

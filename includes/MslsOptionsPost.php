@@ -11,7 +11,7 @@ namespace realloc\Msls;
  * Post options
  * @package Msls
  */
-class MslsOptionsPost extends MslsOptions {
+class MslsOptionsPost extends Options {
 
 	/**
 	 * Separator

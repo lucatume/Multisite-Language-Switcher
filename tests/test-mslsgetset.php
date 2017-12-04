@@ -1,12 +1,12 @@
 <?php
 /**
- * Tests for MslsGetSet
+ * Tests for GetSet
  *
  * @author Dennis Ploetner <re@lloc.de>
  * @package Msls
  */
 
-use realloc\Msls\MslsGetSet;
+use realloc\Msls\GetSet;
 
 /**
  * WP_Test_MslsGetSet
@@ -14,7 +14,7 @@ use realloc\Msls\MslsGetSet;
 class WP_Test_MslsGetSet extends Msls_UnitTestCase {
 
 	function test_is_empty() {
-		$obj = new MslsGetSet();
+		$obj = new GetSet();
 
 		$this->assertTrue( $obj->is_empty() );
 
@@ -33,7 +33,7 @@ class WP_Test_MslsGetSet extends Msls_UnitTestCase {
 	 * Verify the has_value-method
 	 */
 	function test_has_value() {
-		$obj = new MslsGetSet();
+		$obj = new GetSet();
 
 		$obj->temp = 'test';
 
@@ -41,7 +41,7 @@ class WP_Test_MslsGetSet extends Msls_UnitTestCase {
 	}
 	
 	function test_get_arr() {
-		$obj = new MslsGetSet();
+		$obj = new GetSet();
 
 		$obj->temp = 'test';
 
@@ -49,7 +49,7 @@ class WP_Test_MslsGetSet extends Msls_UnitTestCase {
 	}
 
 	function test_reset() {
-		$obj = new MslsGetSet();
+		$obj = new GetSet();
 
 		$obj->temp = 'test';
 		$obj->reset();
@@ -58,7 +58,7 @@ class WP_Test_MslsGetSet extends Msls_UnitTestCase {
 	}
 
 	function test_set_empty() {
-		$obj = new MslsGetSet();
+		$obj = new GetSet();
 
 		$obj->temp = '';
 

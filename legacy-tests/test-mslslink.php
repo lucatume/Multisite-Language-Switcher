@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for MslsLink
+ * Tests for Link
  *
  * @author Dennis Ploetner <re@lloc.de>
  * @package Msls
@@ -43,10 +43,10 @@ class WP_Test_MslsLink extends Msls_UnitTestCase {
 	 * Verify the static create-method
 	 */
 	function test_create_method() {
-		$this->assertInstanceOf( 'MslsLink', MslsLink::create( 1 ) );
-		$this->assertInstanceOf( 'MslsLink', MslsLink::create( null ) );
+		$this->assertInstanceOf( 'Link', MslsLink::create( 1 ) );
+		$this->assertInstanceOf( 'Link', MslsLink::create( null ) );
 		$obj = MslsLink::create( 0 );
-		$this->assertInstanceOf( 'MslsLink', $obj );
+		$this->assertInstanceOf( 'Link', $obj );
 		return $obj;
 	}
 

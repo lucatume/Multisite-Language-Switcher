@@ -27,7 +27,7 @@ class MslsPlugin {
 			MSLS_PLUGIN_VERSION
 		);
 
-		if ( MslsOptions::instance()->activate_autocomplete ) {
+		if ( Options::instance()->activate_autocomplete ) {
 			wp_enqueue_script(
 				'msls-autocomplete',
 				plugins_url( 'js/msls.min.js', MSLS_PLUGIN__FILE__ ),
@@ -47,7 +47,7 @@ class MslsPlugin {
 	 * @return boolean
 	 */
 	public static function init_widget() {
-		if ( ! MslsOptions::instance()->is_excluded() ) {
+		if ( ! Options::instance()->is_excluded() ) {
 			register_widget( 'MslsWidget' );
 			return true;
 		}
@@ -77,7 +77,7 @@ class MslsPlugin {
 	 */
 	public static function set_admin_language( $locale ) {
 		if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
-			$code = MslsOptions::instance()->admin_language;
+			$code = Options::instance()->admin_language;
 			if ( ! empty( $code ) ) {
 				return $code;
 			}

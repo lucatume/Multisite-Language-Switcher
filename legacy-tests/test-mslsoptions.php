@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for MslsOptions
+ * Tests for Options
  *
  * @author Dennis Ploetner <re@lloc.de>
  * @package Msls
@@ -36,17 +36,17 @@ class WP_Test_MslsOptions extends Msls_UnitTestCase {
 	 * Verify the static create-method
 	 */
 	function test_create_method() {
-		$this->assertInstanceOf( 'MslsOptions', MslsOptions::create() );
+		$this->assertInstanceOf( 'Options', MslsOptions::create() );
 	}
 
 	/**
 	 * Verify the static instance-method
-	 * @covers MslsOptions::instance
-	 * @covers MslsOptions::__construct
+	 * @covers Options::instance
+	 * @covers Options::__construct
 	 */
 	function test_instance_method() {
 		$obj = MslsOptions::instance();
-		$this->assertInstanceOf( 'MslsOptions', $obj );
+		$this->assertInstanceOf( 'Options', $obj );
 		return $obj;
 	}
 

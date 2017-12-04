@@ -54,7 +54,7 @@ if ( ! defined( 'MSLS_PLUGIN_VERSION' ) ) {
 
 		if ( is_admin() ) {
 			add_action( 'admin_menu', array( 'MslsPlugin', 'init' ) );
-			add_action( 'admin_menu', array( 'MslsAdmin', 'init' ) );
+			add_action( 'admin_menu', array( 'Admin', 'init' ) );
 
 			add_action( 'load-post.php', array( 'MslsMetaBox', 'init' ) );
 
@@ -89,7 +89,7 @@ if ( ! defined( 'MSLS_PLUGIN_VERSION' ) ) {
 		 * Filter for the_content()
 		 *
 		 * @package Msls
-		 * @uses MslsOptions
+		 * @uses Options
 		 * @param string $content
 		 * @return string
 		 */
@@ -199,7 +199,7 @@ if ( ! defined( 'MSLS_PLUGIN_VERSION' ) ) {
 				if ( ! $current ) {
 					switch_to_blog( $blog->userblog_id );
 
-					if ( 'MslsOptions' != get_class( $mydata ) && ( is_null( $mydata ) || ! $mydata->has_value( $language ) ) ) {
+					if ( 'Options' != get_class( $mydata ) && ( is_null( $mydata ) || ! $mydata->has_value( $language ) ) ) {
 						restore_current_blog();
 						continue;
 					}

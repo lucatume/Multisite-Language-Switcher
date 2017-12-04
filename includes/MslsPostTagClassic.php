@@ -67,7 +67,7 @@ class MslsPostTagClassic extends MslsPostTag {
 		switch_to_blog( $blog->userblog_id );
 
 		$language = $blog->get_language();
-		$flag_url = MslsOptions::instance()->get_flag_url( $language );
+		$flag_url = Options::instance()->get_flag_url( $language );
 		$icon     = MslsAdminIcon::create()->set_language( $language )->set_src( $flag_url );
 		$options  = '';
 		$terms    = get_terms( $type, array( 'hide_empty' => 0 ) );

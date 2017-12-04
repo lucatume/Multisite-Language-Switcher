@@ -12,7 +12,7 @@ namespace realloc\Msls;
  *
  * @package Msls
  */
-class MslsOptionsQuery extends MslsOptions {
+class MslsOptionsQuery extends Options {
 
 	/**
 	 * Rewrite with front

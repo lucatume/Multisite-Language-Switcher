@@ -54,7 +54,7 @@ class MslsBlogCollection implements RegistryInstance {
 
 		$this->current_blog_id = get_current_blog_id();
 
-		$options = MslsOptions::instance();
+		$options = Options::instance();
 
 		$this->current_blog_output = isset( $options->output_current_blog );
 		$this->objects_order       = $options->get_order();
@@ -123,11 +123,11 @@ class MslsBlogCollection implements RegistryInstance {
 	 * The first available user of the blog will be used if there is no
 	 * refrence user configured
 	 *
-	 * @param MslsOptions $options
+	 * @param Options $options
 	 *
 	 * @return array
 	 */
-	public function get_blogs_of_reference_user( MslsOptions $options ) {
+	public function get_blogs_of_reference_user( Options $options ) {
 		$blogs = get_blogs_of_user(
 			$options->has_value( 'reference_user' ) ?
 			$options->reference_user :

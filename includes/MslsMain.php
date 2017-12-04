@@ -14,7 +14,7 @@ namespace realloc\Msls;
 abstract class MslsMain {
 
 	/**
-	 * @var MslsOptions
+	 * @var Options
 	 * @var MslsBlog[]
 	 */
 	protected
@@ -27,7 +27,7 @@ abstract class MslsMain {
 	 * @return MslsMain
 	 */
 	public static function init() {
-		$options = MslsOptions::instance();
+		$options = Options::instance();
 		$blogs   = MslsBlogCollection::instance();
 		$obj     = new static( $options, $blogs );
 
@@ -48,10 +48,10 @@ abstract class MslsMain {
 	/**
 	 * MslsCustomColumn constructor.
 	 *
-	 * @param MslsOptions $options
+	 * @param Options $options
 	 * @param MslsBlogCollection $collection
 	 */
-	public function __construct( MslsOptions $options, MslsBlogCollection $collection ) {
+	public function __construct( Options $options, MslsBlogCollection $collection ) {
 		$this->options    = $options;
 		$this->collection = $collection;
 	}

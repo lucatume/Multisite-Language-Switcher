@@ -1,6 +1,6 @@
 <?php
 /**
- * MslsOptions
+ * Options
  * @author Dennis Ploetner <re@lloc.de>
  * @since 0.9.8
  */
@@ -21,7 +21,7 @@ namespace realloc\Msls;
  * @property string $before_output
  * @property string $after_output
  */
-class MslsOptions extends MslsGetSet implements RegistryInstance {
+class Options extends GetSet implements RegistryInstance {
 
 	/**
 	 * Args
@@ -70,7 +70,7 @@ class MslsOptions extends MslsGetSet implements RegistryInstance {
 	 *
 	 * @param int $id
 	 *
-	 * @return MslsOptions
+	 * @return Options
 	 */
 	public static function create( $id = 0 ) {
 		if ( is_admin() ) {
@@ -84,7 +84,7 @@ class MslsOptions extends MslsGetSet implements RegistryInstance {
 		}
 
 		if ( self::is_main_page() ) {
-			$options = new MslsOptions();
+			$options = new Options();
 		} elseif ( self::is_tax_page() ) {
 			$options = MslsOptionsTax::create();
 		} elseif ( self::is_query_page() ) {
@@ -365,7 +365,7 @@ class MslsOptions extends MslsGetSet implements RegistryInstance {
 	 * The 'blog'-slug-problem :/
 	 *
 	 * @param string $url
-	 * @param MslsOptions $options
+	 * @param Options $options
 	 *
 	 * @return string
 	 */
@@ -397,14 +397,14 @@ class MslsOptions extends MslsGetSet implements RegistryInstance {
 	}
 
 	/**
-	 * Get or create an instance of MslsOptions
+	 * Get or create an instance of Options
 	 * @todo Until PHP 5.2 is not longer the minimum for WordPress ...
-	 * @return MslsOptions
+	 * @return Options
 	 */
 	public static function instance() {
-		if ( ! ( $obj = MslsRegistry::get_object( 'MslsOptions' ) ) ) {
+		if ( ! ( $obj = MslsRegistry::get_object( 'Options' ) ) ) {
 			$obj = new self();
-			MslsRegistry::set_object( 'MslsOptions', $obj );
+			MslsRegistry::set_object( 'Options', $obj );
 		}
 
 		return $obj;

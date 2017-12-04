@@ -26,7 +26,7 @@ class Msls_UnitTestCase extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * Create a MslsOptions mock object
+	 * Create a Options mock object
 	 * When trying to get one of its property, the full option value is retrieved
 	 *
 	 * @param array $values
@@ -34,7 +34,7 @@ class Msls_UnitTestCase extends PHPUnit_Framework_TestCase {
 	 * @return \Mockery\MockInterface
 	 */
 	protected function get_options( array $values = [] ) {
-		$mock = \Mockery::mock( 'MslsOptions' );
+		$mock = \Mockery::mock( 'Options' );
 
 		if ( count( $values ) > 0 ) {
 			foreach ( $values as $key => $value ) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * MslsLink
+ * Link
  *
  * @author Dennis Ploetner <re@lloc.de>
  * @since 0.9.8
@@ -16,7 +16,7 @@ namespace realloc\Msls;
  * @property string $alt
  * @property string $url
  */
-class MslsLink extends MslsGetSet {
+class Link extends GetSet {
 
 	/**
 	 * Output format
@@ -30,7 +30,7 @@ class MslsLink extends MslsGetSet {
 	 */
 	public static function get_types() {
 		return array(
-			'MslsLink',
+			'Link',
 			'MslsLinkTextOnly',
 			'MslsLinkImageOnly',
 			'MslsLinkTextImage',
@@ -62,21 +62,24 @@ class MslsLink extends MslsGetSet {
 	}
 
 	/**
-	 * Factory: Creates a specific instance of MslsLink
+	 * Factory: Creates a specific instance of Link
 	 *
 	 * @param int $display
-	 * @return MslsLink
+	 *
+	 * @return Link
 	 */
 	public static function create( $display ) {
 		if ( has_filter( 'msls_link_create' ) ) {
 			/**
-			 * Returns custom MslsLink-Object
+			 * Returns custom Link-Object
 			 * @since 0.9.9
+			 *
 			 * @param int $display
-			 * @return MslsLink
+			 *
+			 * @return Link
 			 */
 			$obj = apply_filters( 'msls_link_create', $display );
-			if ( is_subclass_of( $obj, 'MslsLink' ) ) {
+			if ( is_subclass_of( $obj, 'Link' ) ) {
 				return $obj;
 			}
 		}

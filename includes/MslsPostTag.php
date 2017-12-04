@@ -19,7 +19,7 @@ class MslsPostTag extends MslsMain {
 	 * @return MslsPostTag
 	 */
 	public static function init() {
-		$options = MslsOptions::instance();
+		$options = Options::instance();
 		$blogs   = MslsBlogCollection::instance();
 
 		if ( $options->activate_autocomplete	) {
@@ -161,7 +161,7 @@ class MslsPostTag extends MslsMain {
 				switch_to_blog( $blog->userblog_id );
 
 				$language = $blog->get_language();
-				$flag_url = MslsOptions::instance()->get_flag_url( $language );
+				$flag_url = Options::instance()->get_flag_url( $language );
 				$icon     = MslsAdminIcon::create()->set_language( $language )->set_src( $flag_url );
 
 				$value = $title = '';

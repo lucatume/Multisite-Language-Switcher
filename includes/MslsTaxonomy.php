@@ -58,7 +58,7 @@ class MslsTaxonomy extends MslsContentTypes implements RegistryInstance {
 	 * @return string
 	 */
 	public function acl_request() {
-		if ( ! MslsOptions::instance()->is_excluded() ) {
+		if ( ! Options::instance()->is_excluded() ) {
 			$request = $this->get_request();
 
 			$tax = get_taxonomy( $request );

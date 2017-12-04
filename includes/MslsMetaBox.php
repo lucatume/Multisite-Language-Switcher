@@ -102,7 +102,7 @@ class MslsMetaBox extends MslsMain {
 				array(
 					$this,
 					(
-					MslsOptions::instance()->activate_autocomplete ?
+					Options::instance()->activate_autocomplete ?
 						'render_input' :
 						'render_select'
 					),
@@ -138,7 +138,7 @@ class MslsMetaBox extends MslsMain {
 
 				$icon = MslsAdminIcon::create()
 				                     ->set_language( $language )
-				                     ->set_src( MslsOptions::instance()->get_flag_url( $language ) );
+				                     ->set_src( Options::instance()->get_flag_url( $language ) );
 				if ( $mydata->has_value( $language ) ) {
 					$icon->set_href( $mydata->$language );
 				}
@@ -239,7 +239,7 @@ class MslsMetaBox extends MslsMain {
 				switch_to_blog( $blog->userblog_id );
 
 				$language = $blog->get_language();
-				$flag_url = MslsOptions::instance()->get_flag_url( $language );
+				$flag_url = Options::instance()->get_flag_url( $language );
 				$icon     = MslsAdminIcon::create()->set_language( $language )->set_src( $flag_url );
 
 				$value = $title = '';

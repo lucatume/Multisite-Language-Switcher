@@ -1,12 +1,12 @@
 <?php
 /**
- * Tests for MslsAdmin
+ * Tests for Admin
  *
  * @author Dennis Ploetner <re@lloc.de>
  * @package Msls
  */
 
-use realloc\Msls\MslsAdmin;
+use realloc\Msls\Admin;
 
 /**
  * WP_Test_MslsAdmin
@@ -14,22 +14,22 @@ use realloc\Msls\MslsAdmin;
 class WP_Test_MslsAdmin extends Msls_UnitTestCase {
 
 	function get_test( array $retval = [] ) {
-		$options    = \Mockery::mock( 'realloc\Msls\MslsOptions' );
+		$options    = \Mockery::mock( 'realloc\Msls\Options' );
 		$collection = \Mockery::mock( 'realloc\Msls\MslsBlogCollection' );
 
-		return new MslsAdmin( $options, $collection );
+		return new Admin( $options, $collection );
 	}
 
 	/**
 	 * Verify the has_problems-method
 	 */
 	function test_has_problems() {
-		$options = \Mockery::mock( 'realloc\Msls\MslsOptions' );
+		$options = \Mockery::mock( 'realloc\Msls\Options' );
 		$options->shouldReceive( 'get_available_languages' )->once()->andReturn( array( 'x' ) );
 
 		$collection = \Mockery::mock( 'realloc\Msls\MslsBlogCollection' );
 
-		$obj = new MslsAdmin( $options, $collection );
+		$obj = new Admin( $options, $collection );
 
 		$this->expectOutputRegex( '/^<div id="msls-warning" class="updated fade"><p>.*$/' );
 		$retval = $obj->has_problems();
@@ -41,11 +41,11 @@ class WP_Test_MslsAdmin extends Msls_UnitTestCase {
 	 * Verify the subsubsub-method
 	 */
 	function test_subsubsub_no_plugin_active_blogs() {
-		$options    = \Mockery::mock( 'realloc\Msls\MslsOptions' );
+		$options    = \Mockery::mock( 'realloc\Msls\Options' );
 		$collection = \Mockery::mock( 'realloc\Msls\MslsBlogCollection' );
 		$collection->shouldReceive( 'get_plugin_active_blogs' )->once()->andReturn( [] );
 
-		$obj = new MslsAdmin( $options, $collection );
+		$obj = new Admin( $options, $collection );
 
 		$this->assertEquals( '', $obj->subsubsub() );
 	}
@@ -57,11 +57,11 @@ class WP_Test_MslsAdmin extends Msls_UnitTestCase {
 	function test_blog_language() {
 		\WP_Mock::userFunction( 'selected', [ 'returns' => '' ] );
 
-		$options    = \Mockery::mock( 'realloc\Msls\MslsOptions' );
+		$options    = \Mockery::mock( 'realloc\Msls\Options' );
 		$options->shouldReceive( 'get_available_languages' )->once()->andReturn( [ 'de_DE', 'it_IT' ] );
 		$collection = \Mockery::mock( 'realloc\Msls\MslsBlogCollection' );
 
-		$obj = new MslsAdmin( $options, $collection );
+		$obj = new Admin( $options, $collection );
 
 		$this->expectOutputRegex( '/^<select id="blog_language" name="msls\[blog_language\]">.*$/' );
 		$obj->blog_language();
@@ -73,11 +73,11 @@ class WP_Test_MslsAdmin extends Msls_UnitTestCase {
 	function test_admin_language() {
 		\WP_Mock::userFunction( 'selected', [ 'returns' => '' ] );
 
-		$options    = \Mockery::mock( 'realloc\Msls\MslsOptions' );
+		$options    = \Mockery::mock( 'realloc\Msls\Options' );
 		$options->shouldReceive( 'get_available_languages' )->once()->andReturn( [ 'de_DE', 'it_IT' ] );
 		$collection = \Mockery::mock( 'realloc\Msls\MslsBlogCollection' );
 
-		$obj = new MslsAdmin( $options, $collection );
+		$obj = new Admin( $options, $collection );
 
 		$this->expectOutputRegex( '/^<select id="admin_language" name="msls\[admin_language\]">.*$/' );
 		$obj->admin_language();
@@ -87,11 +87,11 @@ class WP_Test_MslsAdmin extends Msls_UnitTestCase {
 	 * Verify the reference_user-method
 	 */
 	function test_reference_user() {
-		$options    = \Mockery::mock( 'realloc\Msls\MslsOptions' );
+		$options    = \Mockery::mock( 'realloc\Msls\Options' );
 		$collection = \Mockery::mock( 'realloc\Msls\MslsBlogCollection' );
 		$collection->shouldReceive( 'get_users' )->once()->andReturn( [] );
 
-		$obj = new MslsAdmin( $options, $collection );
+		$obj = new Admin( $options, $collection );
 
 		$this->expectOutputRegex( '/^<select id="reference_user" name="msls\[reference_user\]">.*$/' );
 		$obj->reference_user();

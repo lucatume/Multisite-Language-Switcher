@@ -1,6 +1,6 @@
 <?php
 /**
- * MslsAdmin
+ * Admin
  * @author Dennis Ploetner <re@lloc.de>
  * @since 0.9.8
  */
@@ -11,14 +11,14 @@ namespace realloc\Msls;
  * Administration of the options
  * @package Msls
  */
-class MslsAdmin extends MslsMain {
+class Admin extends MslsMain {
 
 	/**
 	 * Init hooks
 	 *
 	 * @codeCoverageIgnore
 	 *
-	 * @return MslsAdmin
+	 * @return Admin
 	 */
 	public function init_hooks() {
 		if ( current_user_can( 'manage_options' ) ) {
@@ -72,7 +72,7 @@ class MslsAdmin extends MslsMain {
 		} elseif ( $this->options->is_empty() ) {
 			$message = sprintf(
 				__( 'Multisite Language Switcher is almost ready. You must <a href="%s">complete the configuration process</a>.' ),
-				esc_url( admin_url( '/options-general.php?page=MslsAdmin' ) )
+				esc_url( admin_url( '/options-general.php?page=Admin' ) )
 			);
 		}
 
@@ -110,7 +110,7 @@ class MslsAdmin extends MslsMain {
 		foreach ( $this->collection->get_plugin_active_blogs() as $blog ) {
 			$arr[] = sprintf(
 				'<a href="%s"%s>%s / %s</a>',
-				get_admin_url( $blog->userblog_id, '/options-general.php?page=MslsAdmin' ),
+				get_admin_url( $blog->userblog_id, '/options-general.php?page=Admin' ),
 				( $blog->userblog_id == $this->collection->get_current_blog_id() ? ' class="current"' : '' ),
 				$blog->blogname,
 				$blog->get_description()
@@ -330,7 +330,7 @@ class MslsAdmin extends MslsMain {
 	public function display() {
 		echo $this->render_select(
 			'display',
-			MslsLink::get_types_description(),
+			Link::get_types_description(),
 			$this->options->display
 		);
 	}

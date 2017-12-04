@@ -26,8 +26,8 @@ class MslsOutput extends MslsMain {
 	 * @param bool $filter
 	 * @param bool $exists
 	 *
-	 * @uses MslsOptions
-	 * @uses MslsLink
+	 * @uses Options
+	 * @uses Link
 	 * @return array
 	 */
 	public function get( $display, $filter = false, $exists = false ) {
@@ -35,8 +35,8 @@ class MslsOutput extends MslsMain {
 
 		$blogs = $this->collection->get_filtered( $filter );
 		if ( $blogs ) {
-			$mydata = MslsOptions::create();
-			$link   = MslsLink::create( $display );
+			$mydata = Options::create();
+			$link   = Link::create( $display );
 
 			foreach ( $blogs as $blog ) {
 				$language = $blog->get_language();
@@ -68,7 +68,7 @@ class MslsOutput extends MslsMain {
 					 * @since 0.9.8
 					 *
 					 * @param string $url
-					 * @param MslsLink $link
+					 * @param Link $link
 					 * @param bool current
 					 */
 					$arr[] = ( string ) apply_filters( 'msls_output_get', $url, $link, $current );
@@ -151,7 +151,7 @@ class MslsOutput extends MslsMain {
 	/**
 	 * Returns true if the requirements not fulfilled
 	 *
-	 * @param MslsOptions|null $mydata
+	 * @param Options|null $mydata
 	 * @param boolean $exists
 	 * @param string $language
 	 *
@@ -159,7 +159,7 @@ class MslsOutput extends MslsMain {
 	 */
 	public function is_requirements_not_fulfilled( $mydata, $exists, $language ) {
 		return (
-			'MslsOptions' != get_class( $mydata ) &&
+			'Options' != get_class( $mydata ) &&
 			$exists &&
 			( is_null( $mydata ) || ! $mydata->has_value( $language ) )
 		);

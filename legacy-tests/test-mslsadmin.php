@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for MslsAdmin
+ * Tests for Admin
  *
  * @author Dennis Ploetner <re@lloc.de>
  * @package Msls
@@ -16,7 +16,7 @@ class WP_Test_MslsAdmin extends Msls_UnitTestCase {
 	 */
 	function test_init_method() {
 		$obj = MslsAdmin::init();
-		$this->assertInstanceOf( 'MslsAdmin', $obj );
+		$this->assertInstanceOf( 'Admin', $obj );
 		return $obj;
 	}
 

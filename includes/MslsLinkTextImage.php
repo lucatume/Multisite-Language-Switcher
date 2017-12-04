@@ -11,7 +11,7 @@ namespace realloc\Msls;
  * Link type: Text and image
  * @package Msls
  */
-class MslsLinkTextImage extends MslsLink {
+class MslsLinkTextImage extends Link {
 
 	/**
 	 * Output format

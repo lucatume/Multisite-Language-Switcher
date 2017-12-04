@@ -80,7 +80,7 @@ class CustomColumn extends MslsMain {
 		$blogs  = $this->collection->get();
 
 		if ( 'mslscol' == $column_name && ! empty( $blogs ) ) {
-			$mydata = MslsOptions::create( $item_id );
+			$mydata = Options::create( $item_id );
 
 			foreach ( $blogs as $blog ) {
 				switch_to_blog( $blog->userblog_id );

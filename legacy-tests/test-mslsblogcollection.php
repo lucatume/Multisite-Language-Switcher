@@ -34,7 +34,7 @@ class WP_Test_MslsBlogCollection extends Msls_UnitTestCase {
 	 * @depends test_instance_method
 	 */
 	function test_get_blogs_of_reference_user_method( $obj ) {
-		$options = $this->getMock( 'MslsOptions' );
+		$options = $this->getMock( 'Options' );
 		$this->assertInternalType( 'array', $obj->get_blogs_of_reference_user( $options ) );
 	}
 

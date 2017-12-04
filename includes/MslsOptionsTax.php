@@ -11,7 +11,7 @@ namespace realloc\Msls;
  * Taxonomy options
  * @package Msls
  */
-class MslsOptionsTax extends MslsOptions {
+class MslsOptionsTax extends Options {
 
 	/**
 	 * Separator

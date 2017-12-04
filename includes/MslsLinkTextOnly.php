@@ -11,7 +11,7 @@ namespace realloc\Msls;
  * Link type: Text only
  * @package Msls
  */
-class MslsLinkTextOnly extends MslsLink {
+class MslsLinkTextOnly extends Link {
 
 	/**
 	 * Output format
