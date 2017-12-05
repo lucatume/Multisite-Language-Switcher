@@ -1,8 +1,8 @@
 <?php
 /**
- * MslsAdminIcon
+ * AdminIcon
  * @author Dennis Ploetner <re@lloc.de>
- * @since 0.9.8
+ * @since 2.0
  */
 
 namespace realloc\Msls;
@@ -11,7 +11,7 @@ namespace realloc\Msls;
  * Handles the icon links in the backend
  * @package Msls
  */
-class MslsAdminIcon {
+class AdminIcon {
 
 	/**
 	 * Language
@@ -44,6 +44,12 @@ class MslsAdminIcon {
 	protected $type;
 
 	/**
+	 * Object Type
+	 * @var string
+	 */
+	protected $object_type;
+
+	/**
 	 * Path
 	 * @var string
 	 */
@@ -51,70 +57,84 @@ class MslsAdminIcon {
 
 	/**
 	 * Factory method
-	 * @return MslsAdminIcon
+	 * @return AdminIcon
 	 */
 	public static function create() {
-		$obj  = MslsContentTypes::create();
+		$obj  = ContentTypes::create();
 		$type = $obj->get_request();
 
 		if ( $obj->is_taxonomy() ) {
-			return new MslsAdminIconTaxonomy( $type );
+			$object_type = Taxonomy::instance()->get_post_type();
+			return new AdminIconTaxonomy( $type, $object_type );
 		}
-		return new MslsAdminIcon( $type );
+
+		return new self( $type );
 	}
 
 	/**
 	 * Constructor
+	 *
 	 * @param string $type
+	 * @param string $object_type
 	 */
-	public function __construct( $type ) {
-		$this->type = esc_attr( $type );
+	public function __construct( $type, $object_type = '' ) {
+		$this->type        = $type;
+		$this->object_type = $object_type;
+
 		$this->set_path();
 	}
 
 	/**
 	 * Set the path by type
+	 *
 	 * @uses add_query_arg()
-	 * @return MslsAdminIcon
+	 * @return AdminIcon
 	 */
 	public function set_path() {
 		if ( 'post' != $this->type ) {
-			$this->path = add_query_arg(
-				array( 'post_type' => $this->type ),
-				$this->path
-			);
+			$this->path = add_query_arg( array( 'post_type' => $this->type ), $this->path );
 		}
+
 		return $this;
 	}
 
 	/**
 	 * Set language
+	 *
 	 * @param string $language
-	 * @return MslsAdminIcon
+	 *
+	 * @return AdminIcon
 	 */
 	public function set_language( $language ) {
 		$this->language = $language;
+
 		return $this;
 	}
 
 	/**
 	 * Set src
+	 *
 	 * @param string $src
-	 * @return MslsAdminIcon
+	 *
+	 * @return AdminIcon
 	 */
 	public function set_src( $src ) {
 		$this->src = $src;
+
 		return $this;
 	}
 
 	/**
 	 * Set href
 	 * @uses get_edit_post_link()
+	 *
 	 * @param int $id
-	 * @return MslsAdminIcon
+	 *
+	 * @return AdminIcon
 	 */
 	public function set_href( $id ) {
 		$this->href = get_edit_post_link( $id );
+
 		return $this;
 	}
 
@@ -131,11 +151,7 @@ class MslsAdminIcon {
 	 * @return string
 	 */
 	public function get_img() {
-		return sprintf(
-			'<img alt="%s" src="%s" />',
-			$this->language,
-			$this->src
-		);
+		return sprintf('<img alt="%s" src="%s" />', $this->language, $this->src );
 	}
 
 	/**
@@ -157,12 +173,8 @@ class MslsAdminIcon {
 				$this->language
 			);
 		}
-		return sprintf(
-			'<a title="%s" href="%s">%s</a>&nbsp;',
-			$title,
-			$href,
-			$this->get_img()
-		);
+
+		return sprintf( '<a title="%s" href="%s">%s</a>&nbsp;', $title, $href, $this->get_img() );
 	}
 
 	/**

@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for MslsTaxonomy
+ * Tests for Taxonomy
  *
  * @author Dennis Ploetner <re@lloc.de>
  * @package Msls
@@ -13,12 +13,12 @@ class WP_Test_MslsTaxonomy extends Msls_UnitTestCase {
 
 	/**
 	 * Verify the instance-method
-	 * @covers MslsTaxonomy::instance
-	 * @covers MslsTaxonomy::__construct
+	 * @covers Taxonomy::instance
+	 * @covers Taxonomy::__construct
 	 */
 	function test_instance_method() {
 		$obj = MslsTaxonomy::instance();
-		$this->assertInstanceOf( 'MslsTaxonomy', $obj );
+		$this->assertInstanceOf( 'Taxonomy', $obj );
 		return $obj;
 	}
 

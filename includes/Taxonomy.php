@@ -1,6 +1,6 @@
 <?php
 /**
- * MslsTaxonomy
+ * Taxonomy
  * @author Dennis Ploetner <re@lloc.de>
  * @since 0.9.8
  */
@@ -11,7 +11,7 @@ namespace realloc\Msls;
  * Content types: Taxonomies (Tags, Categories, ...)
  * @package Msls
  */
-class MslsTaxonomy extends MslsContentTypes implements RegistryInstance {
+class Taxonomy extends ContentTypes implements RegistryInstance {
 
 	/**
 	 * Post type
@@ -66,11 +66,13 @@ class MslsTaxonomy extends MslsContentTypes implements RegistryInstance {
 				return $request;
 			}
 		}
+
 		return '';
 	}
 
 	/**
 	 * Get the requested post_type of the taxonomy
+	 *
 	 * @return string
 	 */
 	public function get_post_type() {
@@ -78,14 +80,14 @@ class MslsTaxonomy extends MslsContentTypes implements RegistryInstance {
 	}
 
 	/**
-	 * Get or create an instance of MslsTaxonomy
+	 * Get or create an instance of Taxonomy
 	 * @todo Until PHP 5.2 is not longer the minimum for WordPress ...
-	 * @return MslsTaxonomy
+	 * @return Taxonomy
 	 */
 	public static function instance() {
-		if ( ! ( $obj = MslsRegistry::get_object( 'MslsTaxonomy' ) ) ) {
+		if ( ! ( $obj = MslsRegistry::get_object( 'Taxonomy' ) ) ) {
 			$obj = new self();
-			MslsRegistry::set_object( 'MslsTaxonomy', $obj );
+			MslsRegistry::set_object( 'Taxonomy', $obj );
 		}
 		return $obj;
 	}

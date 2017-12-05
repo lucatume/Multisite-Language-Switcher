@@ -46,7 +46,7 @@ class MslsOptionsPost extends Options {
 		}
 
 		global $current_site;
-		$blog_id = MslsBlogCollection::instance()->get_blog_id( $language );
+		$blog_id = BlogCollection::instance()->get_blog_id( $language );
 		if ( $current_site->blog_id != $blog_id ) {
 			$option = get_blog_option( $blog_id, 'msls' );
 			//error_log( print_r( $option, true ) );

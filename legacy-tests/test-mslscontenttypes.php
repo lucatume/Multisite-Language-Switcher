@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for MslsContentTypes
+ * Tests for ContentTypes
  *
  * @author Dennis Ploetner <re@lloc.de>
  * @package Msls
@@ -16,7 +16,7 @@ class WP_Test_MslsContentTypes extends Msls_UnitTestCase {
 	 */
 	function test_create_method() {
 		$obj = MslsContentTypes::create();
-		$this->assertInstanceOf( 'MslsContentTypes', $obj );
+		$this->assertInstanceOf( 'ContentTypes', $obj );
 		return $obj;
 	}
 

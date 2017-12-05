@@ -1,6 +1,6 @@
 <?php
 /**
- * MslsCustomFilter
+ * CustomFilter
  * @author Maciej Czerpiński <contact@speccode.com>
  * @contributor Dennis Ploetner <re@lloc.de>
  * @since 0.9.9
@@ -12,18 +12,18 @@ namespace realloc\Msls;
  * Adding custom filter to posts/pages table.
  * @package Msls
  */
-class MslsCustomFilter extends MslsMain {
+class CustomFilter extends MslsMain {
 
 	/**
 	 * Init hooks
 	 *
 	 * @codeCoverageIgnore
 	 *
-	 * @return MslsCustomFilter
+	 * @return CustomFilter
 	 */
 	public function init_hooks() {
 		if ( ! $this->options->is_excluded() ) {
-			$post_type = MslsPostType::instance()->get_request();
+			$post_type = PostType::instance()->get_request();
 
 			if ( ! empty( $post_type ) ) {
 				add_action( 'restrict_manage_posts', array( $this, 'add_filter' ) );

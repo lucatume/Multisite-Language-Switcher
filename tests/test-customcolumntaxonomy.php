@@ -15,7 +15,7 @@ class WP_Test_MslsCustomColumnTaxonomy extends Msls_UnitTestCase {
 
 	function get_test( array $retval = [] ) {
 		$options    = \Mockery::mock( 'realloc\Msls\Options' );
-		$collection = \Mockery::mock( 'realloc\Msls\MslsBlogCollection' );
+		$collection = \Mockery::mock( 'realloc\Msls\BlogCollection' );
 
 		$collection->shouldReceive( 'get' )->once()->andReturn( $retval );
 

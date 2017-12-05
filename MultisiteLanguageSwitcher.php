@@ -61,7 +61,7 @@ if ( ! defined( 'MSLS_PLUGIN_VERSION' ) ) {
 			add_action( 'load-post-new.php', array( 'MslsMetaBox', 'init' ) );
 
 			add_action( 'load-edit.php', array( 'MslsCustomColumn', 'init' ) );
-			add_action( 'load-edit.php', array( 'MslsCustomFilter', 'init' ) );
+			add_action( 'load-edit.php', array( 'CustomFilter', 'init' ) );
 
 			add_action( 'load-edit-tags.php', array( 'MslsCustomColumnTaxonomy', 'init' ) );
 			add_action( 'load-edit-tags.php', array( 'MslsPostTag', 'init' ) );

@@ -6,6 +6,8 @@
  * @package Msls
  */
 
+use realloc\Msls\BlogCollection;
+
 /**
  * WP_Test_MslsBlogCollection
  */
@@ -14,8 +16,8 @@ class WP_Test_MslsBlogCollection extends Msls_UnitTestCase {
 	/**
 	 * Verify the instance-method
 	 */
-	function test_instance_method() {
-		$obj =  MslsBlogCollection::instance();
+	function test_instance() {
+		$obj =  BlogCollection::instance();
 		$this->assertInstanceOf( 'BlogCollection', $obj );
 		return $obj;
 	}
@@ -24,7 +26,7 @@ class WP_Test_MslsBlogCollection extends Msls_UnitTestCase {
 	 * Verify the get_configured_blog_description-method
 	 * @depends test_instance_method
 	 */
-	function test_get_description_method( $obj ) {
+	function test_get_description( $obj ) {
 		$this->assertEquals( 'Test', $obj->get_configured_blog_description( 0, 'Test' ) );
 		$this->assertEquals( false, $obj->get_configured_blog_description( 0, false ) );
 	}
@@ -33,7 +35,7 @@ class WP_Test_MslsBlogCollection extends Msls_UnitTestCase {
 	 * Verify the test_get_blogs_of_reference_user-method
 	 * @depends test_instance_method
 	 */
-	function test_get_blogs_of_reference_user_method( $obj ) {
+	function test_get_blogs_of_reference_user( $obj ) {
 		$options = $this->getMock( 'Options' );
 		$this->assertInternalType( 'array', $obj->get_blogs_of_reference_user( $options ) );
 	}
@@ -42,7 +44,7 @@ class WP_Test_MslsBlogCollection extends Msls_UnitTestCase {
 	 * Verify the get_current_blog_id-method
 	 * @depends test_instance_method
 	 */
-	function test_get_current_blog_id_method( $obj ) {
+	function test_get_current_blog_id( $obj ) {
 		$this->assertInternalType( 'integer', $obj->get_current_blog_id() );
 	}
 
@@ -50,7 +52,7 @@ class WP_Test_MslsBlogCollection extends Msls_UnitTestCase {
 	 * Verify the has_current_blog-method
 	 * @depends test_instance_method
 	 */
-	function test_has_current_blog_method( $obj ) {
+	function test_has_current_blog( $obj ) {
 		$this->assertInternalType( 'boolean', $obj->has_current_blog() );
 	}
 
@@ -58,7 +60,7 @@ class WP_Test_MslsBlogCollection extends Msls_UnitTestCase {
 	 * Verify the get_current_blog-method
 	 * @depends test_instance_method
 	 */
-	function test_get_current_blog_method( $obj ) {
+	function test_get_current_blog( $obj ) {
 		// return Blog|null
 	}
 
@@ -66,7 +68,7 @@ class WP_Test_MslsBlogCollection extends Msls_UnitTestCase {
 	 * Verify the get_objects-method
 	 * @depends test_instance_method
 	 */
-	function test_get_objects_method( $obj ) {
+	function test_get_objects( $obj ) {
 		$this->assertInternalType( 'array', $obj->get_objects() );
 	}
 
@@ -74,7 +76,7 @@ class WP_Test_MslsBlogCollection extends Msls_UnitTestCase {
 	 * Verify the is_plugin_active-method
 	 * @depends test_instance_method
 	 */
-	function test_is_plugin_active_method( $obj ) {
+	function test_is_plugin_active( $obj ) {
 		$this->assertInternalType( 'boolean', $obj->is_plugin_active( 0 ) );
 	}
 
@@ -82,7 +84,7 @@ class WP_Test_MslsBlogCollection extends Msls_UnitTestCase {
 	 * Verify the get_plugin_active_blogs-method
 	 * @depends test_instance_method
 	 */
-	function test_get_plugin_active_blogs_method( $obj ) {
+	function test_get_plugin_active_blogs( $obj ) {
 		$this->assertInternalType( 'array', $obj->get_plugin_active_blogs() );
 	}
 
@@ -90,7 +92,7 @@ class WP_Test_MslsBlogCollection extends Msls_UnitTestCase {
 	 * Verify the get-method
 	 * @depends test_instance_method
 	 */
-	function test_get_method( $obj ) {
+	function test_get( $obj ) {
 		$this->assertInternalType( 'array', $obj->get() );
 	}
 
@@ -98,7 +100,7 @@ class WP_Test_MslsBlogCollection extends Msls_UnitTestCase {
 	 * Verify the get_filtered-method
 	 * @depends test_instance_method
 	 */
-	function test_get_filtered_method( $obj ) {
+	function test_get_filtered( $obj ) {
 		$this->assertInternalType( 'array', $obj->get_filtered() );
 	}
 
@@ -106,7 +108,7 @@ class WP_Test_MslsBlogCollection extends Msls_UnitTestCase {
 	 * Verify the get_users-method
 	 * @depends test_instance_method
 	 */
-	function test_get_users_method( $obj ) {
+	function test_get_users( $obj ) {
 		$this->assertInternalType( 'array', $obj->get_users() );
 	}
 

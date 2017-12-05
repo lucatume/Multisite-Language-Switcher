@@ -1,6 +1,6 @@
 <?php
 /**
- * MslsBlog
+ * Blog
  * @author Dennis Ploetner <re@lloc.de>
  * @since 0.9.8
  */
@@ -12,7 +12,7 @@ namespace realloc\Msls;
  * @property int $userblog_id
  * @package Msls
  */
-class MslsBlog {
+class Blog {
 
 	/**
 	 * WordPress generates such an object
@@ -35,7 +35,7 @@ class MslsBlog {
 	/**
 	 * Constructor
 	 *
-	 * @param StdClass $obj
+	 * @param \StdClass $obj
 	 * @param string $description
 	 */
 	public function __construct( $obj, $description ) {
@@ -68,11 +68,7 @@ class MslsBlog {
 	 * @return string
 	 */
 	public function get_description() {
-		return (
-		empty( $this->description ) ?
-			$this->get_language() :
-			$this->description
-		);
+		return empty( $this->description ) ? $this->get_language() : $this->description;
 	}
 
 	/**
@@ -82,7 +78,7 @@ class MslsBlog {
 	 * @return string
 	 */
 	public function get_language() {
-		return ( empty( $this->language ) ? 'us' : $this->language );
+		return empty( $this->language ) ? 'us' : $this->language;
 	}
 
 	/**
@@ -94,7 +90,7 @@ class MslsBlog {
 	public function get_alpha2() {
 		$alpha2 = substr( $this->get_language(), 0, 2 );
 
-		return ( 'us' == $alpha2 ? 'en' : $alpha2 );
+		return 'us' == $alpha2 ? 'en' : $alpha2;
 	}
 
 	/**
@@ -116,25 +112,25 @@ class MslsBlog {
 	/**
 	 * Sort objects by language
 	 *
-	 * @param MslsBlog $a
-	 * @param MslsBlog $b
+	 * @param Blog $a
+	 * @param Blog $b
 	 *
 	 * @return int
 	 */
-	public static function language( MslsBlog $a, MslsBlog $b ) {
-		return ( self::_cmp( $a->get_language(), $b->get_language() ) );
+	public static function language( Blog $a, Blog $b ) {
+		return self::_cmp( $a->get_language(), $b->get_language() );
 	}
 
 	/**
 	 * Sort objects by description
 	 *
-	 * @param MslsBlog $a
-	 * @param MslsBlog $b
+	 * @param Blog $a
+	 * @param Blog $b
 	 *
 	 * @return int
 	 */
-	public static function description( MslsBlog $a, MslsBlog $b ) {
-		return ( self::_cmp( $a->get_description(), $b->get_description() ) );
+	public static function description( Blog $a, Blog $b ) {
+		return self::_cmp( $a->get_description(), $b->get_description() );
 	}
 
 }

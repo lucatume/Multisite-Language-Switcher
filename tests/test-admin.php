@@ -13,9 +13,9 @@ use realloc\Msls\Admin;
  */
 class WP_Test_MslsAdmin extends Msls_UnitTestCase {
 
-	function get_test( array $retval = [] ) {
+	function get_test() {
 		$options    = \Mockery::mock( 'realloc\Msls\Options' );
-		$collection = \Mockery::mock( 'realloc\Msls\MslsBlogCollection' );
+		$collection = \Mockery::mock( 'realloc\Msls\BlogCollection' );
 
 		return new Admin( $options, $collection );
 	}
@@ -27,7 +27,7 @@ class WP_Test_MslsAdmin extends Msls_UnitTestCase {
 		$options = \Mockery::mock( 'realloc\Msls\Options' );
 		$options->shouldReceive( 'get_available_languages' )->once()->andReturn( array( 'x' ) );
 
-		$collection = \Mockery::mock( 'realloc\Msls\MslsBlogCollection' );
+		$collection = \Mockery::mock( 'realloc\Msls\BlogCollection' );
 
 		$obj = new Admin( $options, $collection );
 
@@ -42,7 +42,7 @@ class WP_Test_MslsAdmin extends Msls_UnitTestCase {
 	 */
 	function test_subsubsub_no_plugin_active_blogs() {
 		$options    = \Mockery::mock( 'realloc\Msls\Options' );
-		$collection = \Mockery::mock( 'realloc\Msls\MslsBlogCollection' );
+		$collection = \Mockery::mock( 'realloc\Msls\BlogCollection' );
 		$collection->shouldReceive( 'get_plugin_active_blogs' )->once()->andReturn( [] );
 
 		$obj = new Admin( $options, $collection );
@@ -59,7 +59,7 @@ class WP_Test_MslsAdmin extends Msls_UnitTestCase {
 
 		$options    = \Mockery::mock( 'realloc\Msls\Options' );
 		$options->shouldReceive( 'get_available_languages' )->once()->andReturn( [ 'de_DE', 'it_IT' ] );
-		$collection = \Mockery::mock( 'realloc\Msls\MslsBlogCollection' );
+		$collection = \Mockery::mock( 'realloc\Msls\BlogCollection' );
 
 		$obj = new Admin( $options, $collection );
 
@@ -75,7 +75,7 @@ class WP_Test_MslsAdmin extends Msls_UnitTestCase {
 
 		$options    = \Mockery::mock( 'realloc\Msls\Options' );
 		$options->shouldReceive( 'get_available_languages' )->once()->andReturn( [ 'de_DE', 'it_IT' ] );
-		$collection = \Mockery::mock( 'realloc\Msls\MslsBlogCollection' );
+		$collection = \Mockery::mock( 'realloc\Msls\BlogCollection' );
 
 		$obj = new Admin( $options, $collection );
 
@@ -88,7 +88,7 @@ class WP_Test_MslsAdmin extends Msls_UnitTestCase {
 	 */
 	function test_reference_user() {
 		$options    = \Mockery::mock( 'realloc\Msls\Options' );
-		$collection = \Mockery::mock( 'realloc\Msls\MslsBlogCollection' );
+		$collection = \Mockery::mock( 'realloc\Msls\BlogCollection' );
 		$collection->shouldReceive( 'get_users' )->once()->andReturn( [] );
 
 		$obj = new Admin( $options, $collection );

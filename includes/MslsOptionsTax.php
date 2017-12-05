@@ -34,7 +34,7 @@ class MslsOptionsTax extends Options {
 	 */
 	public static function create( $id = 0 ) {
 		if ( is_admin() ) {
-			$obj = MslsContentTypes::create();
+			$obj = ContentTypes::create();
 
 			$id  = (int) $id;
 			$req = $obj->acl_request();

@@ -95,7 +95,7 @@ class MslsMetaBox extends MslsMain {
 	 * Add
 	 */
 	public function add() {
-		foreach ( MslsPostType::instance()->get() as $post_type ) {
+		foreach ( PostType::instance()->get() as $post_type ) {
 			add_meta_box(
 				'msls',
 				__( 'Multisite Language Switcher', 'multisite-language-switcher' ),
@@ -136,9 +136,9 @@ class MslsMetaBox extends MslsMain {
 
 				$language = $blog->get_language();
 
-				$icon = MslsAdminIcon::create()
-				                     ->set_language( $language )
-				                     ->set_src( Options::instance()->get_flag_url( $language ) );
+				$icon = AdminIcon::create()
+				                 ->set_language( $language )
+				                 ->set_src( Options::instance()->get_flag_url( $language ) );
 				if ( $mydata->has_value( $language ) ) {
 					$icon->set_href( $mydata->$language );
 				}
@@ -240,7 +240,7 @@ class MslsMetaBox extends MslsMain {
 
 				$language = $blog->get_language();
 				$flag_url = Options::instance()->get_flag_url( $language );
-				$icon     = MslsAdminIcon::create()->set_language( $language )->set_src( $flag_url );
+				$icon     = AdminIcon::create()->set_language( $language )->set_src( $flag_url );
 
 				$value = $title = '';
 

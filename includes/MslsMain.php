@@ -15,7 +15,7 @@ abstract class MslsMain {
 
 	/**
 	 * @var Options
-	 * @var MslsBlog[]
+	 * @var Blog[]
 	 */
 	protected
 		$options,
@@ -28,7 +28,7 @@ abstract class MslsMain {
 	 */
 	public static function init() {
 		$options = Options::instance();
-		$blogs   = MslsBlogCollection::instance();
+		$blogs   = BlogCollection::instance();
 		$obj     = new static( $options, $blogs );
 
 		$obj->init_hooks();
@@ -49,9 +49,9 @@ abstract class MslsMain {
 	 * MslsCustomColumn constructor.
 	 *
 	 * @param Options $options
-	 * @param MslsBlogCollection $collection
+	 * @param BlogCollection $collection
 	 */
-	public function __construct( Options $options, MslsBlogCollection $collection ) {
+	public function __construct( Options $options, BlogCollection $collection ) {
 		$this->options    = $options;
 		$this->collection = $collection;
 	}
@@ -80,7 +80,7 @@ abstract class MslsMain {
 	public function get_input_array( $object_id ) {
 		$arr = array();
 
-		$current_blog = MslsBlogCollection::instance()->get_current_blog();
+		$current_blog = BlogCollection::instance()->get_current_blog();
 		if ( ! is_null( $current_blog ) ) {
 			$arr[ $current_blog->get_language() ] = (int) $object_id;
 		}
@@ -146,9 +146,9 @@ abstract class MslsMain {
 			return;
 		}
 
-		$blogs = MslsBlogCollection::instance();
+		$blogs = BlogCollection::instance();
 		if ( ! $blogs->has_current_blog() ) {
-			$this->debugger( 'MslsBlogCollection::instance()->has_current_blog returns false.' );
+			$this->debugger( 'BlogCollection::instance()->has_current_blog returns false.' );
 			return;
 		}
 

@@ -20,7 +20,7 @@ class MslsPostTag extends MslsMain {
 	 */
 	public static function init() {
 		$options = Options::instance();
-		$blogs   = MslsBlogCollection::instance();
+		$blogs   = BlogCollection::instance();
 
 		if ( $options->activate_autocomplete	) {
 			$obj     = new self( $options, $blogs );
@@ -29,7 +29,7 @@ class MslsPostTag extends MslsMain {
 			$obj = new MslsPostTagClassic( $options, $blogs );
 		}
 
-		$taxonomy = MslsContentTypes::create()->acl_request();
+		$taxonomy = ContentTypes::create()->acl_request();
 		if ( '' != $taxonomy ) {
 			add_action( "{$taxonomy}_add_form_fields",  array( $obj, 'add_input' ) );
 			add_action( "{$taxonomy}_edit_form_fields", array( $obj, 'edit_input' ) );
@@ -147,10 +147,10 @@ class MslsPostTag extends MslsMain {
 	 */
 	public function the_input( $tag, $title_format, $item_format ) {
 		$term_id = ( is_object( $tag ) ? $tag->term_id : 0 );
-		$blogs   = MslsBlogCollection::instance()->get();
+		$blogs   = BlogCollection::instance()->get();
 		if ( $blogs ) {
 			$my_data = MslsOptionsTax::create( $term_id );
-			$type    = MslsContentTypes::create()->get_request();
+			$type    = ContentTypes::create()->get_request();
 
 			printf(
 				$title_format,
@@ -162,7 +162,7 @@ class MslsPostTag extends MslsMain {
 
 				$language = $blog->get_language();
 				$flag_url = Options::instance()->get_flag_url( $language );
-				$icon     = MslsAdminIcon::create()->set_language( $language )->set_src( $flag_url );
+				$icon     = AdminIcon::create()->set_language( $language )->set_src( $flag_url );
 
 				$value = $title = '';
 				if ( $my_data->has_value( $language ) ) {
@@ -194,7 +194,7 @@ class MslsPostTag extends MslsMain {
  	 * @codeCoverageIgnore
 	 */
 	public function set( $term_id ) {
-		if ( MslsContentTypes::create()->acl_request() ) {
+		if ( ContentTypes::create()->acl_request() ) {
 			$this->save( $term_id, 'MslsOptionsTax' );
 		}
 	}

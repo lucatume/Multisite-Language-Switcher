@@ -1,6 +1,6 @@
 <?php
 /**
- * MslsContentTypes
+ * ContentTypes
  * @author Dennis Ploetner <re@lloc.de>
  * @since 0.9.8
  */
@@ -11,7 +11,7 @@ namespace realloc\Msls;
  * Supported content types
  * @package Msls
  */
-class MslsContentTypes {
+class ContentTypes {
 
 	/**
 	 * Request
@@ -27,14 +27,17 @@ class MslsContentTypes {
 
 	/**
 	 * Factory method
-	 * @return MslsContentTypes
+	 *
+	 * @return object
 	 */
 	public static function create() {
 		$_request = MslsPlugin::get_superglobals( array( 'taxonomy' ) );
+
 		if ( '' != $_request['taxonomy'] ) {
-			return MslsTaxonomy::instance();
+			return Taxonomy::instance();
 		}
-		return MslsPostType::instance();
+
+		return PostType::instance();
 	}
 
 	/**
@@ -66,6 +69,7 @@ class MslsContentTypes {
 
 	/**
 	 * Getter
+	 *
 	 * @return array
 	 */
 	public function get() {
@@ -74,14 +78,11 @@ class MslsContentTypes {
 
 	/**
 	 * Gets the request if it is an allowed content type
+	 *
 	 * @return string
 	 */
 	public function get_request() {
-		return(
-			in_array( $this->request, $this->types ) ?
-			$this->request :
-			''
-		);
+		return in_array( $this->request, $this->types ) ? $this->request : '';
 	}
 
 }

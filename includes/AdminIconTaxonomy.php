@@ -1,8 +1,8 @@
 <?php
 /**
- * MslsAdminIconTaxonomy
+ * AdminIconTaxonomy
  * @author Dennis Ploetner <re@lloc.de>
- * @since 0.9.8
+ * @since 2.0
  */
 
 namespace realloc\Msls;
@@ -11,7 +11,7 @@ namespace realloc\Msls;
  * Handles backend icons for taxonomies
  * @package Msls
  */
-class MslsAdminIconTaxonomy extends MslsAdminIcon {
+class AdminIconTaxonomy extends AdminIcon {
 
 	/**
 	 * Path
@@ -21,31 +21,34 @@ class MslsAdminIconTaxonomy extends MslsAdminIcon {
 
 	/**
 	 * Set href
+	 *
 	 * @uses get_edit_term_link() 
+	 *
 	 * @param int $id
-	 * @return MslsAdminIconTaxonomy
+	 *
+	 * @return AdminIconTaxonomy
 	 */
 	public function set_href( $id ) {
-		$this->href = get_edit_term_link(
-			$id,
-			$this->type,
-			MslsTaxonomy::instance()->get_post_type()
-		);
+		$this->href = get_edit_term_link( $id, $this->type, $this->object_type );
+
 		return $this;
 	}
 
 	/**
 	 * Set the path by type
+	 *
 	 * @uses add_query_arg()
-	 * @return MslsAdminIconTaxonomy
+	 * @return AdminIconTaxonomy
 	 */
 	public function set_path() {
-		$args      = array( 'taxonomy' => $this->type );
-		$post_type = MslsTaxonomy::instance()->get_post_type();
-		if ( ! empty( $post_type ) ) {
-			$args['post_type'] = $post_type;
+		$args = array( 'taxonomy' => $this->type );
+
+		if ( ! empty( $this->object_type ) ) {
+			$args['post_type'] =  $this->object_type;
 		}
+
 		$this->path = add_query_arg( $args, $this->path );
+
 		return $this;
 	}
 

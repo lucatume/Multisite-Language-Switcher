@@ -1,6 +1,6 @@
 <?php
 /**
- * MslsBlogCollection
+ * BlogCollection
  * @author Dennis Ploetner <re@lloc.de>
  * @since 0.9.8
  */
@@ -12,7 +12,7 @@ namespace realloc\Msls;
  *
  * @package Msls
  */
-class MslsBlogCollection implements RegistryInstance {
+class BlogCollection implements RegistryInstance {
 
 	/**
 	 * ID of the current blog
@@ -27,7 +27,7 @@ class MslsBlogCollection implements RegistryInstance {
 	private $current_blog_output;
 
 	/**
-	 * Collection of MslsBlog-objects
+	 * Collection of Blog-objects
 	 * @var array
 	 */
 	private $objects = array();
@@ -87,13 +87,13 @@ class MslsBlogCollection implements RegistryInstance {
 				);
 
 				if ( false !== $description ) {
-					$this->objects[ $blog->userblog_id ] = new MslsBlog(
+					$this->objects[ $blog->userblog_id ] = new Blog(
 						$blog,
 						$description
 					);
 				}
 			}
-			uasort( $this->objects, array( 'MslsBlog', $this->objects_order ) );
+			uasort( $this->objects, array( 'Blog', $this->objects_order ) );
 		}
 	}
 
@@ -178,7 +178,7 @@ class MslsBlogCollection implements RegistryInstance {
 
 	/**
 	 * Gets current blog as object
-	 * @return MslsBlog|null
+	 * @return Blog|null
 	 */
 	public function get_current_blog() {
 		return (
@@ -190,7 +190,7 @@ class MslsBlogCollection implements RegistryInstance {
 
 	/**
 	 * Gets an array with all blog-objects
-	 * @return MslsBlog[]
+	 * @return Blog[]
 	 */
 	public function get_objects() {
 		return $this->objects;
@@ -290,14 +290,14 @@ class MslsBlogCollection implements RegistryInstance {
 	}
 
 	/**
-	 * Gets or creates an instance of MslsBlogCollection
+	 * Gets or creates an instance of BlogCollection
 	 * @todo Until PHP 5.2 is not longer the minimum for WordPress ...
-	 * @return MslsBlogCollection
+	 * @return BlogCollection
 	 */
 	public static function instance() {
-		if ( ! ( $obj = MslsRegistry::get_object( 'MslsBlogCollection' ) ) ) {
+		if ( ! ( $obj = MslsRegistry::get_object( 'BlogCollection' ) ) ) {
 			$obj = new self();
-			MslsRegistry::set_object( 'MslsBlogCollection', $obj );
+			MslsRegistry::set_object( 'BlogCollection', $obj );
 		}
 
 		return $obj;

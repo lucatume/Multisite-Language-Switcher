@@ -76,7 +76,7 @@ class Options extends GetSet implements RegistryInstance {
 		if ( is_admin() ) {
 			$id = (int) $id;
 
-			if ( MslsContentTypes::create()->is_taxonomy() ) {
+			if ( ContentTypes::create()->is_taxonomy() ) {
 				return MslsOptionsTax::create( $id );
 			}
 

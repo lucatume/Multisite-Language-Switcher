@@ -58,17 +58,18 @@ class MslsPostTagClassic extends MslsPostTag {
 	/**
 	 * Prints options inputs
 	 * @uses selected
-	 * @param MslsBlog $blog
+	 *
+	 * @param Blog $blog
 	 * @param string $type
 	 * @param MslsOptionsTax $mydata
 	 * @param string $item_format
 	 */
-	public function print_option( MslsBlog $blog, $type, MslsOptionsTax $mydata, $item_format ) {
+	public function print_option( Blog $blog, $type, MslsOptionsTax $mydata, $item_format ) {
 		switch_to_blog( $blog->userblog_id );
 
 		$language = $blog->get_language();
 		$flag_url = Options::instance()->get_flag_url( $language );
-		$icon     = MslsAdminIcon::create()->set_language( $language )->set_src( $flag_url );
+		$icon     = AdminIcon::create()->set_language( $language )->set_src( $flag_url );
 		$options  = '';
 		$terms    = get_terms( $type, array( 'hide_empty' => 0 ) );
 
@@ -104,7 +105,7 @@ class MslsPostTagClassic extends MslsPostTag {
 		if ( $blogs ) {
 			$term_id = ( is_object( $tag ) ? $tag->term_id : 0 );
 			$mydata  = MslsOptionsTax::create( $term_id );
-			$type    = MslsContentTypes::create()->get_request();
+			$type    = ContentTypes::create()->get_request();
 
 			printf(
 				$title_format,

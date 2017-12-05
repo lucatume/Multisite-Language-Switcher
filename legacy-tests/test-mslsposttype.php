@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for MslsPostType
+ * Tests for PostType
  *
  * @author Dennis Ploetner <re@lloc.de>
  * @package Msls
@@ -13,12 +13,12 @@ class WP_Test_MslsPostType extends Msls_UnitTestCase {
 
 	/**
 	 * Verify the instance-method
-	 * @covers MslsPostType::instance
-	 * @covers MslsPostType::__construct
+	 * @covers PostType::instance
+	 * @covers PostType::__construct
 	 */
 	function test_instance_method() {
 		$obj = MslsPostType::instance();
-		$this->assertInstanceOf( 'MslsPostType', $obj );
+		$this->assertInstanceOf( 'PostType', $obj );
 		return $obj;
 	}
 

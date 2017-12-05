@@ -24,7 +24,7 @@ class CustomColumnTaxonomy extends CustomColumn {
 	 */
 	public function init_hooks() {
 		if ( ! $this->options->is_excluded() ) {
-			$taxonomy = MslsTaxonomy::instance()->get_request();
+			$taxonomy = Taxonomy::instance()->get_request();
 
 			if ( ! empty( $taxonomy ) ) {
 				add_filter( "manage_edit-{$taxonomy}_columns", array( $this, 'th' ) );

@@ -1,6 +1,6 @@
 <?php
 /**
- * MslsPostType
+ * PostType
  * @author Dennis Ploetner <re@lloc.de>
  * @since 0.9.8
  */
@@ -11,7 +11,7 @@ namespace realloc\Msls;
  * Content types: Post types (Pages, Posts, ...)
  * @package Msls
  */
-class MslsPostType extends MslsContentTypes implements RegistryInstance {
+class PostType extends ContentTypes implements RegistryInstance {
 
 	/**
 	 * Constructor
@@ -51,7 +51,7 @@ class MslsPostType extends MslsContentTypes implements RegistryInstance {
 	}
 
 	/**
-	 * Get or create an instance of MslsPostType
+	 * Get or create an instance of PostType
 	 * @todo Until PHP 5.2 is not longer the minimum for WordPress ...
 	 * @return MslsBlogPostType
 	 */

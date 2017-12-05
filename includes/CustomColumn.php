@@ -25,7 +25,7 @@ class CustomColumn extends MslsMain {
 	 */
 	public function init_hooks() {
 		if ( ! $this->options->is_excluded() ) {
-			$post_type = MslsPostType::instance()->get_request();
+			$post_type = PostType::instance()->get_request();
 
 			if ( ! empty( $post_type ) ) {
 				add_filter( "manage_{$post_type}_posts_columns", array( $this, 'th' ) );
@@ -54,7 +54,7 @@ class CustomColumn extends MslsMain {
 				$language = $blog->get_language();
 				$flag_url = $this->options->get_flag_url( $language );
 
-				$icon = new MslsAdminIcon( null );
+				$icon = new AdminIcon( null );
 				$icon->set_language( $language )->set_src( $flag_url );
 
 				$arr[] = $icon->get_img();
@@ -87,7 +87,7 @@ class CustomColumn extends MslsMain {
 
 				$language = $blog->get_language();
 
-				$icon = MslsAdminIcon::create();
+				$icon = AdminIcon::create();
 				$icon->set_language( $language );
 
 				if ( $mydata->has_value( $language ) ) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for MslsCustomFilter
+ * Tests for CustomFilter
  *
  * @author Dennis Ploetner <re@lloc.de>
  * @package Msls
@@ -16,7 +16,7 @@ class WP_Test_MslsCustomFilter extends Msls_UnitTestCase {
 	 */
 	function test_init_method() {
 		$obj = MslsCustomFilter::init();
-		$this->assertInstanceOf( 'MslsCustomFilter', $obj );
+		$this->assertInstanceOf( 'CustomFilter', $obj );
 		return $obj;
 	}
 
