@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for MslsOptionsQueryDay
+ * Tests for OptionsQueryDay
  *
  * @author Dennis Ploetner <re@lloc.de>
  * @package Msls

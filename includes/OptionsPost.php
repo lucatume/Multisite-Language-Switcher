@@ -1,6 +1,6 @@
 <?php
 /**
- * MslsOptionsPost
+ * OptionsPost
  * @author Dennis Ploetner <re@lloc.de>
  * @since 0.9.8
  */
@@ -11,7 +11,7 @@ namespace realloc\Msls;
  * Post options
  * @package Msls
  */
-class MslsOptionsPost extends Options {
+class OptionsPost extends Options {
 
 	/**
 	 * Separator

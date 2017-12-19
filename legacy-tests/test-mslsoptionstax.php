@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for MslsOptionsTax
+ * Tests for OptionsTax
  *
  * @author Dennis Ploetner <re@lloc.de>
  * @package Msls
@@ -16,7 +16,7 @@ class WP_Test_MslsOptionsTax extends Msls_UnitTestCase {
 	 */
 	function test_create_method() {
 		$obj = MslsOptionsTax::create();
-		$this->assertInstanceOf( 'MslsOptionsTax', $obj );
+		$this->assertInstanceOf( 'OptionsTax', $obj );
 		return $obj;
 	}
 

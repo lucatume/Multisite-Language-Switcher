@@ -1,6 +1,6 @@
 <?php
 /**
- * MslsMetaBox
+ * MetaBox
  * @author Dennis Ploetner <re@lloc.de>
  * @since 0.9.8
  */
@@ -11,14 +11,14 @@ namespace realloc\Msls;
  * Meta box for the edit mode of the (custom) post types
  * @package Msls
  */
-class MslsMetaBox extends MslsMain {
+class MetaBox extends Main {
 
 	/**
 	 * Init hooks
 	 *
 	 * @codeCoverageIgnore
 	 *
-	 * @return MslsMetaBox
+	 * @return MetaBox
 	 */
 	public function init_hooks() {
 		if ( ! $this->options->is_excluded() ) {
@@ -37,7 +37,7 @@ class MslsMetaBox extends MslsMain {
 	 * the requested search-term and then die silently
 	 */
 	public static function suggest() {
-		$json = new MslsJson;
+		$json = new Json;
 
 		if ( filter_has_var( INPUT_POST, 'blog_id' ) ) {
 			switch_to_blog(
@@ -124,7 +124,7 @@ class MslsMetaBox extends MslsMain {
 			global $post;
 
 			$type   = get_post_type( $post->ID );
-			$mydata = new MslsOptionsPost( $post->ID );
+			$mydata = new OptionsPost( $post->ID );
 			$temp   = $post;
 
 			wp_nonce_field( MSLS_PLUGIN_PATH, 'msls_noncename' );
@@ -229,7 +229,7 @@ class MslsMetaBox extends MslsMain {
 			global $post;
 
 			$post_type = get_post_type( $post->ID );
-			$my_data   = new MslsOptionsPost( $post->ID );
+			$my_data   = new OptionsPost( $post->ID );
 			$temp      = $post;
 			$items     = '';
 
@@ -309,7 +309,7 @@ class MslsMetaBox extends MslsMain {
 		}
 
 		$capability = (
-		'page' == filter_input( INPUT_POST, 'post_type', FILTER_SANITIZE_STRING ) ?
+			'page' == filter_input( INPUT_POST, 'post_type', FILTER_SANITIZE_STRING ) ?
 			'edit_page' :
 			'edit_post'
 		);
@@ -318,7 +318,7 @@ class MslsMetaBox extends MslsMain {
 			return;
 		}
 
-		$this->save( $post_id, 'MslsOptionsPost' );
+		$this->save( $post_id, 'OptionsPost' );
 	}
 
 }

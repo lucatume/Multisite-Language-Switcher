@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for MslsOptionsTaxTerm
+ * Tests for OptionsTaxTerm
  *
  * @author Dennis Ploetner <re@lloc.de>
  * @package Msls

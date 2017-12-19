@@ -1,6 +1,6 @@
 <?php
 /**
- * MslsLanguageArray
+ * LanguageArray
  * @author Dennis Ploetner <re@lloc.de>
  * @since 0.9.8
  */
@@ -12,7 +12,7 @@ namespace realloc\Msls;
  * @example https://gist.githubusercontent.com/lloc/2c232cef3f910acf692f/raw/c78a78b42cb4c9e97a118523f7497f02b838a2ee/MslsLanguageArray.php
  * @package Msls
  */
-class MslsLanguageArray {
+class LanguageArray {
 
 	/**
 	 * Generic container
@@ -34,9 +34,11 @@ class MslsLanguageArray {
 	 * Set a key-value-pair
 	 * - $key must be a string of length >= 2
 	 * - $value must be an integer > 0
+	 *
 	 * @param string $key
 	 * @param mixed $value
-	 * @return MslsLanguageArray
+	 *
+	 * @return LanguageArray
 	 */
 	public function set( $key, $value ) {
 		$value = (int) $value;

@@ -1,6 +1,6 @@
 <?php
 /**
- * MslsRegistry
+ * Registry
  * @author Dennis Ploetner <re@lloc.de>
  * @since 0.9.8
  */
@@ -11,7 +11,7 @@ namespace realloc\Msls;
  * Registry instead of singletons
  * @package Msls
  */
-class MslsRegistry {
+class Registry {
 
 	/**
 	 * Generic container
@@ -21,7 +21,7 @@ class MslsRegistry {
 
 	/**
 	 * Instance
-	 * @var MslsRegistry
+	 * @var Registry
 	 */
 	private static $instance;
 
@@ -61,7 +61,7 @@ class MslsRegistry {
 
 	/**
 	 * Registry is a singleton
-	 * @return MslsRegistry
+	 * @return Registry
 	 */
 	public static function instance() {
 		if ( ! isset( self::$instance ) ) {

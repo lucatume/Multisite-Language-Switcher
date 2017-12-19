@@ -6,6 +6,8 @@
  * @package Msls
  */
 
+use realloc\Msls\Json;
+
 /**
  * WP_Test_MslsJson
  */
@@ -18,7 +20,7 @@ class WP_Test_MslsJson extends Msls_UnitTestCase {
 	 * @covers Json::compare
 	 */
 	function test_add_get_methods() {
-		$obj = new MslsJson();
+		$obj = new Json();
 		$obj->add( null, 'Test 3' )
 			->add( '2', 'Test 2' )
 			->add( 1, 'Test 1' );

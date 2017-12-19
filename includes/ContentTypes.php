@@ -31,7 +31,7 @@ class ContentTypes {
 	 * @return object
 	 */
 	public static function create() {
-		$_request = MslsPlugin::get_superglobals( array( 'taxonomy' ) );
+		$_request = Plugin::get_superglobals( array( 'taxonomy' ) );
 
 		if ( '' != $_request['taxonomy'] ) {
 			return Taxonomy::instance();

@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for MslsMetaBox
+ * Tests for MetaBox
  *
  * @author Dennis Ploetner <re@lloc.de>
  * @package Msls
@@ -16,7 +16,7 @@ class WP_Test_MslsMetaBox extends Msls_UnitTestCase {
 	 */
 	function test_init_method() {
 		$obj = MslsMetaBox::init();
-		$this->assertInstanceOf( 'MslsMetaBox', $obj );
+		$this->assertInstanceOf( 'MetaBox', $obj );
 		return $obj;
 	}
 

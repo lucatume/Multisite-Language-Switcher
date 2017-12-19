@@ -33,33 +33,29 @@ class BlogCollection implements RegistryInstance {
 	private $objects = array();
 
 	/**
-	 * Order output by language or description
-	 * @var string
-	 */
-	private $objects_order;
-
-	/**
 	 * Active plugins in the whole network
 	 * @var array
 	 */
 	private $active_plugins;
 
 	/**
+	 * @var Options
+	 */
+	protected $options;
+
+	/**
 	 * Constructor
 	 */
-	public function __construct() {
+	public function __construct( Options $options ) {
 		if ( ! has_filter( 'msls_blog_collection_description' ) ) {
 			add_filter( 'msls_blog_collection_description', array( $this, 'get_configured_blog_description' ), 10, 2 );
 		}
 
-		$this->current_blog_id = get_current_blog_id();
+		$this->options             = $options;
+		$this->current_blog_id     = get_current_blog_id();
+		$this->current_blog_output = isset( $this->options->output_current_blog );
 
-		$options = Options::instance();
-
-		$this->current_blog_output = isset( $options->output_current_blog );
-		$this->objects_order       = $options->get_order();
-
-		if ( ! $options->is_excluded() ) {
+		if ( ! $this->options->is_excluded() ) {
 			/**
 			 * Returns custom filtered blogs of the blogs_collection
 			 * @since 0.9.8
@@ -68,13 +64,14 @@ class BlogCollection implements RegistryInstance {
 			 */
 			$blogs_collection = (array) apply_filters(
 				'msls_blog_collection_construct',
-				$this->get_blogs_of_reference_user( $options )
+				$this->get_blogs_of_reference_user()
 			);
 
 			foreach ( $blogs_collection as $blog ) {
 				$description = false;
+
 				if ( $blog->userblog_id == $this->current_blog_id ) {
-					$description = $options->description;
+					$description = $this->options->description;
 				}
 				elseif ( ! $this->is_plugin_active( $blog->userblog_id ) ) {
 					continue;
@@ -93,7 +90,11 @@ class BlogCollection implements RegistryInstance {
 					);
 				}
 			}
-			uasort( $this->objects, array( 'Blog', $this->objects_order ) );
+
+			$objects_order = $this->options->get_order();
+			uasort( $this->objects, function ( $a, $b ) use ( $objects_order ) {
+				return strcmp( $a->$objects_order, $b->$objects_order );
+			} );
 		}
 	}
 
@@ -123,25 +124,14 @@ class BlogCollection implements RegistryInstance {
 	 * The first available user of the blog will be used if there is no
 	 * refrence user configured
 	 *
-	 * @param Options $options
-	 *
 	 * @return array
 	 */
-	public function get_blogs_of_reference_user( Options $options ) {
+	public function get_blogs_of_reference_user( ) {
 		$blogs = get_blogs_of_user(
-			$options->has_value( 'reference_user' ) ?
-			$options->reference_user :
+			$this->options->has_value( 'reference_user' ) ?
+			$this->options->reference_user :
 			current( $this->get_users( 'ID', 1 ) )
 		);
-
-		/**
-		 * @todo Check if this is still useful
-		 */
-		if ( is_array( $blogs ) ) {
-			foreach ( $blogs as $key => $blog ) {
-				$blogs[ $key ]->blog_id = $blog->userblog_id;
-			}
-		}
 
 		return $blogs;
 	}
@@ -205,19 +195,16 @@ class BlogCollection implements RegistryInstance {
 	 */
 	public function is_plugin_active( $blog_id ) {
 		if ( ! is_array( $this->active_plugins ) ) {
-			$this->active_plugins = get_site_option(
-				'active_sitewide_plugins',
-				array()
-			);
+			$this->active_plugins = get_site_option( 'active_sitewide_plugins', [] );
 		}
 
 		if ( isset( $this->active_plugins[ MSLS_PLUGIN_PATH ] ) ) {
 			return true;
 		}
 
-		$plugins = get_blog_option( $blog_id, 'active_plugins', array() );
+		$plugins = get_blog_option( $blog_id, 'active_plugins', [] );
 
-		return ( in_array( MSLS_PLUGIN_PATH, $plugins ) );
+		return in_array( MSLS_PLUGIN_PATH, $plugins );
 	}
 
 	/**
@@ -291,14 +278,20 @@ class BlogCollection implements RegistryInstance {
 
 	/**
 	 * Gets or creates an instance of BlogCollection
-	 * @todo Until PHP 5.2 is not longer the minimum for WordPress ...
+	 *
 	 * @return BlogCollection
 	 */
 	public static function instance() {
-		if ( ! ( $obj = MslsRegistry::get_object( 'BlogCollection' ) ) ) {
-			$obj = new self();
-			MslsRegistry::set_object( 'BlogCollection', $obj );
+		$obj = Registry::get_object( __CLASS__ );
+
+		if ( $obj ) {
+			return $obj;
 		}
+
+		$options = Options::instance();
+		$obj     = new static( $options );
+
+		Registry::set_object( __CLASS__, $obj );
 
 		return $obj;
 	}

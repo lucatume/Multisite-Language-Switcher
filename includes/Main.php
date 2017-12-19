@@ -1,6 +1,6 @@
 <?php
 /**
- * MslsMain
+ * Main
  * @author Dennis Ploetner <re@lloc.de>
  * @since 0.9.8
  */
@@ -11,7 +11,7 @@ namespace realloc\Msls;
  * Abstraction for the hook classes
  * @package Msls
  */
-abstract class MslsMain {
+abstract class Main {
 
 	/**
 	 * @var Options
@@ -24,7 +24,7 @@ abstract class MslsMain {
 	/**
 	 * Init
 	 *
-	 * @return MslsMain
+	 * @return Main
 	 */
 	public static function init() {
 		$options = Options::instance();
@@ -80,7 +80,7 @@ abstract class MslsMain {
 	public function get_input_array( $object_id ) {
 		$arr = array();
 
-		$current_blog = BlogCollection::instance()->get_current_blog();
+		$current_blog = $this->collection->get_current_blog();
 		if ( ! is_null( $current_blog ) ) {
 			$arr[ $current_blog->get_language() ] = (int) $object_id;
 		}
@@ -123,7 +123,7 @@ abstract class MslsMain {
 	 * @codeCoverageIgnore
 	 */
 	public function delete( $object_id ) {
-		$this->save( $object_id, 'MslsOptionsPost' );
+		$this->save( $object_id, 'OptionsPost' );
 	}
 
 	/**
@@ -146,14 +146,13 @@ abstract class MslsMain {
 			return;
 		}
 
-		$blogs = BlogCollection::instance();
-		if ( ! $blogs->has_current_blog() ) {
-			$this->debugger( 'BlogCollection::instance()->has_current_blog returns false.' );
+		if ( ! $this->collection->has_current_blog() ) {
+			$this->debugger( '$this->collection->has_current_blog() returns false.' );
 			return;
 		}
 
-		$language = $blogs->get_current_blog()->get_language();
-		$msla     = new MslsLanguageArray( $this->get_input_array( $object_id ) );
+		$language = $this->collection->get_current_blog()->get_language();
+		$msla     = new LanguageArray( $this->get_input_array( $object_id ) );
 		$options  = new $class( $object_id );
 		$temp     = $options->get_arr();
 
@@ -164,7 +163,7 @@ abstract class MslsMain {
 			$options->delete();
 		}
 
-		foreach ( $blogs->get() as $blog ) {
+		foreach ( $this->collection->get() as $blog ) {
 			switch_to_blog( $blog->userblog_id );
 
 			$language = $blog->get_language();

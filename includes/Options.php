@@ -77,20 +77,20 @@ class Options extends GetSet implements RegistryInstance {
 			$id = (int) $id;
 
 			if ( ContentTypes::create()->is_taxonomy() ) {
-				return MslsOptionsTax::create( $id );
+				return OptionsTax::create( $id );
 			}
 
-			return new MslsOptionsPost( $id );
+			return new OptionsPost( $id );
 		}
 
 		if ( self::is_main_page() ) {
 			$options = new Options();
 		} elseif ( self::is_tax_page() ) {
-			$options = MslsOptionsTax::create();
+			$options = OptionsTax::create();
 		} elseif ( self::is_query_page() ) {
-			$options = MslsOptionsQuery::create();
+			$options = OptionsQuery::create();
 		} else {
-			$options = new MslsOptionsPost( get_queried_object_id() );
+			$options = new OptionsPost( get_queried_object_id() );
 		}
 		add_filter( 'check_url', array( $options, 'check_for_blog_slug' ), 10, 2 );
 
@@ -255,14 +255,11 @@ class Options extends GetSet implements RegistryInstance {
 
 	/**
 	 * Get order
+	 *
 	 * @return string
 	 */
 	public function get_order() {
-		return (
-		isset( $this->sort_by_description ) ?
-			'description' :
-			'language'
-		);
+		return ( isset( $this->sort_by_description ) ? 'description' : 'language' );
 	}
 
 	/**
@@ -402,9 +399,9 @@ class Options extends GetSet implements RegistryInstance {
 	 * @return Options
 	 */
 	public static function instance() {
-		if ( ! ( $obj = MslsRegistry::get_object( 'Options' ) ) ) {
+		if ( ! ( $obj = Registry::get_object( 'Options' ) ) ) {
 			$obj = new self();
-			MslsRegistry::set_object( 'Options', $obj );
+			Registry::set_object( 'Options', $obj );
 		}
 
 		return $obj;

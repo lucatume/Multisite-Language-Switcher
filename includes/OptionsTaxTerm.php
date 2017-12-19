@@ -1,6 +1,6 @@
 <?php
 /**
- * MslsOptionsTaxTerm
+ * OptionsTaxTerm
  * @author Dennis Ploetner <re@lloc.de>
  * @since 0.9.8
  */
@@ -11,7 +11,7 @@ namespace realloc\Msls;
  * Tag options
  * @package Msls
  */
-class MslsOptionsTaxTerm extends MslsOptionsTax {
+class OptionsTaxTerm extends OptionsTax {
 
 	/**
 	 * Base option

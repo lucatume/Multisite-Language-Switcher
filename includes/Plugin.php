@@ -1,6 +1,6 @@
 <?php
 /**
- * MslsPlugin
+ * Plugin
  * @author Dennis Ploetner <re@lloc.de>
  * @since 0.9.8
  */
@@ -12,31 +12,50 @@ namespace realloc\Msls;
  *
  * @package Msls
  */
-class MslsPlugin {
+class Plugin {
 
 	/**
-	 * Loads styles and some js if needed
-	 * The methiod returns true if JS is loaded or false if not
- 	 * @return boolean
+	 * @var Options
 	 */
-	public static function init() {
-		wp_enqueue_style(
-			'msls-styles',
-			plugins_url( 'css/msls.css', MSLS_PLUGIN__FILE__ ),
-			array(),
-			MSLS_PLUGIN_VERSION
-		);
+	protected $options;
 
-		if ( Options::instance()->activate_autocomplete ) {
-			wp_enqueue_script(
-				'msls-autocomplete',
-				plugins_url( 'js/msls.min.js', MSLS_PLUGIN__FILE__ ),
-				array( 'jquery-ui-autocomplete' ),
-				MSLS_PLUGIN_VERSION
-			);
-			return true;
+	public function __construct( Options $options ) {
+		$this->options = $options;
+	}
+
+	public static function init() {
+		$options = Options::instance();
+		$obj     = new self( $options );
+
+		add_action( 'plugins_loaded', [ $obj, 'load_textdomain' ] );
+
+		if ( function_exists( 'register_uninstall_hook' ) ) {
+			register_uninstall_hook( MSLS_PLUGIN__FILE__, [ $obj, 'uninstall' ] );
 		}
-		return false;
+
+		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
+			add_action( 'widgets_init', [ $obj, 'register_widget' ] );
+
+			if ( is_admin() ) {
+				wp_enqueue_style(
+					'msls-styles',
+					plugins_url( 'css/msls.css', MSLS_PLUGIN__FILE__ ),
+					[],
+					MSLS_PLUGIN_VERSION
+				);
+
+				if ( $options->activate_autocomplete ) {
+					wp_enqueue_script(
+						'msls-autocomplete',
+						plugins_url( 'js/msls.min.js', MSLS_PLUGIN__FILE__ ),
+						[ 'jquery-ui-autocomplete' ],
+						MSLS_PLUGIN_VERSION
+					);
+				}
+			}
+		}
+
+		return $obj;
 	}
 
 	/**
@@ -44,24 +63,25 @@ class MslsPlugin {
 	 *
 	 * The widget will only be registered if the current blog is not
 	 * excluded in the configuration of the plugin.
+	 *
 	 * @return boolean
 	 */
-	public static function init_widget() {
-		if ( ! Options::instance()->is_excluded() ) {
-			register_widget( 'MslsWidget' );
-			return true;
+	public function register_widget() {
+		if ( $this->options->is_excluded() ) {
+			return false;
 		}
-		return false;
+
+		register_widget( Widget::init() );
+
+		return true;
 	}
 
 	/**
 	 * Load textdomain
 	 *
-	 * The method will be executed allways on init because we have some
-	 * translatable string in the frontend too.
 	 * @return boolean
 	 */
-	public static function init_i18n_support() {
+	public function load_textdomain() {
 		return load_plugin_textdomain(
 			'multisite-language-switcher',
 			false,
@@ -70,39 +90,27 @@ class MslsPlugin {
 	}
 
 	/**
-	 * Set the admin language
-	 * Callback for 'locale' hook
-	 * @param string $locale
-	 * @return string
-	 */
-	public static function set_admin_language( $locale ) {
-		if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
-			$code = Options::instance()->admin_language;
-			if ( ! empty( $code ) ) {
-				return $code;
-			}
-		}
-		return $locale;
-	}
-
-	/**
 	 * Message handler
 	 *
 	 * Prints a message box to the screen.
+	 *
 	 * @param string $message
 	 * @param string $css_class
+	 *
 	 * @return boolean
 	 */
 	public static function message_handler( $message, $css_class = 'error' ) {
-		if ( ! empty( $message ) ) {
-			printf(
-				'<div id="msls-warning" class="%s"><p>%s</p></div>',
-				$css_class,
-				$message
-			);
-			return true;
+		if ( empty( $message ) ) {
+			return false;
 		}
-		return false;
+
+		printf(
+			'<div id="msls-warning" class="%s"><p>%s</p></div>',
+			$css_class,
+			$message
+		);
+
+		return true;
 	}
 
 	/**
@@ -119,7 +127,7 @@ class MslsPlugin {
 		 * restore_current_blog
 		 */
 		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
-			$cache = MslsSqlCacher::init( __CLASS__ )->set_params( __METHOD__ );
+			$cache = SqlCacher::init( __CLASS__ )->set_params( __METHOD__ );
 
 			$blogs = $cache->get_results(
 				$cache->prepare(
@@ -135,6 +143,7 @@ class MslsPlugin {
 				restore_current_blog();
 			}
 		}
+
 		return self::cleanup();
 	}
 
@@ -147,7 +156,7 @@ class MslsPlugin {
 	 */
 	public static function cleanup() {
 		if ( delete_option( 'msls' ) ) {
-			$cache = MslsSqlCacher::init( __CLASS__ )->set_params( __METHOD__ );
+			$cache = SqlCacher::init( __CLASS__ )->set_params( __METHOD__ );
 			$sql   = $cache->prepare(
 				"DELETE FROM {$cache->options} WHERE option_name LIKE %s",
 				'msls_%'
@@ -159,11 +168,13 @@ class MslsPlugin {
 
 	/**
 	 * Get specific vars from $_POST and $_GET in a safe way
+	 *
 	 * @param array $list
+	 *
 	 * @return array
 	 */
 	public static function get_superglobals( array $list ) {
-		$arr = array();
+		$arr = [];
 
 		foreach ( $list as $var ) {
 			if ( filter_has_var( INPUT_POST, $var ) ) {

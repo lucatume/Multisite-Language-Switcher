@@ -4,7 +4,7 @@
 Plugin Name: Multisite Language Switcher
 Plugin URI: http://msls.co/
 Description: A simple but powerful plugin that will help you to manage the relations of your contents in a multilingual multisite-installation.
-Version: 1.1
+Version: 2.0
 Author: Dennis Ploetner
 Author URI: http://lloc.de/
 Text Domain: multisite-language-switcher
@@ -33,44 +33,37 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  * @author Dennis Ploetner <re@lloc.de>
  */
 if ( ! defined( 'MSLS_PLUGIN_VERSION' ) ) {
-	define( 'MSLS_PLUGIN_VERSION', '1.1' );
+	define( 'MSLS_PLUGIN_VERSION', '2.0' );
 
 	if ( ! defined( 'MSLS_PLUGIN_PATH' ) ) {
 		define( 'MSLS_PLUGIN_PATH', ( function_exists( 'plugin_dir_path' ) ? plugin_dir_path( __FILE__ ) : __DIR__ . '/' ) );
 	}
+
 	if ( ! defined( 'MSLS_PLUGIN__FILE__' ) ) {
 		define( 'MSLS_PLUGIN__FILE__', __FILE__ );
 	}
 
-	add_action( 'plugins_loaded', array( 'MslsPlugin', 'init_i18n_support' ) );
-
-	if ( function_exists( 'register_uninstall_hook' ) ) {
-		register_uninstall_hook( __FILE__, array( 'MslsPlugin', 'uninstall' ) );
-	}
+	\realloc\Msls\Plugin::init();
 
 	if ( function_exists( 'is_multisite' ) && is_multisite() ) {
-		add_action( 'widgets_init', array( 'MslsPlugin', 'init_widget' ) );
-		add_filter( 'locale', array( 'MslsPlugin', 'set_admin_language' ) );
-
 		if ( is_admin() ) {
-			add_action( 'admin_menu', array( 'MslsPlugin', 'init' ) );
 			add_action( 'admin_menu', array( 'Admin', 'init' ) );
 
-			add_action( 'load-post.php', array( 'MslsMetaBox', 'init' ) );
+			add_action( 'load-post.php', array( 'MetaBox', 'init' ) );
 
-			add_action( 'load-post-new.php', array( 'MslsMetaBox', 'init' ) );
+			add_action( 'load-post-new.php', array( 'MetaBox', 'init' ) );
 
 			add_action( 'load-edit.php', array( 'MslsCustomColumn', 'init' ) );
 			add_action( 'load-edit.php', array( 'CustomFilter', 'init' ) );
 
 			add_action( 'load-edit-tags.php', array( 'MslsCustomColumnTaxonomy', 'init' ) );
-			add_action( 'load-edit-tags.php', array( 'MslsPostTag', 'init' ) );
+			add_action( 'load-edit-tags.php', array( 'PostTag', 'init' ) );
 
 			if ( filter_has_var( INPUT_POST, 'action' ) ) {
 				$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
 
 				if ( 'add-tag' == $action ) {
-					add_action( 'admin_init', array( 'MslsPostTag', 'init' ) );
+					add_action( 'admin_init', array( 'PostTag', 'init' ) );
 				}
 				elseif ( 'inline-save' == $action ) {
 					add_action( 'admin_init', array( 'MslsCustomColumn', 'init' ) );
@@ -80,9 +73,9 @@ if ( ! defined( 'MSLS_PLUGIN_VERSION' ) ) {
 				}
 			}
 
-			add_action( 'wp_ajax_suggest_posts', array( 'MslsMetaBox', 'suggest' ) );
+			add_action( 'wp_ajax_suggest_posts', array( 'MetaBox', 'suggest' ) );
 
-			add_action( 'wp_ajax_suggest_terms', array( 'MslsPostTag', 'suggest' ) );
+			add_action( 'wp_ajax_suggest_terms', array( 'PostTag', 'suggest' ) );
 		}
 
 		/**
@@ -95,28 +88,32 @@ if ( ! defined( 'MSLS_PLUGIN_VERSION' ) ) {
 		 */
 		function msls_content_filter( $content ) {
 			if ( ! is_front_page() && is_singular() ) {
-				$options = MslsOptions::instance();
+				$options = realloc\Msls\Options::instance();
+
 				if ( $options->is_content_filter() ) {
 					$content .= msls_filter_string();
 				}
 			}
 			return $content;
 		}
+
 		add_filter( 'the_content', 'msls_content_filter' );
 
 		/**
 		 * Create filterstring for msls_content_filter()
 		 *
 		 * @package Msls
-		 * @uses MslsOutput
+		 * @uses Output
 		 * @param string $pref
 		 * @param string $post
 		 * @return string
 		 */
 		function msls_filter_string( $pref = '<p id="msls">', $post = '</p>' ) {
-			$obj    = new MslsOutput();
-			$links  = $obj->get( 1, true, true );
-			$output = __( 'This post is also available in %s.', 'multisite-language-switcher' );
+			$options    = realloc\Msls\Options::instance();
+			$collection = realloc\Msls\BlogCollection::instance();
+			$obj        = new realloc\Msls\Output( $options, $collection );
+			$links      = $obj->get( 1, true, true );
+			$output     = __( 'This post is also available in %s.', 'multisite-language-switcher' );
 
 			if ( has_filter( 'msls_filter_string' ) ) {
 				/**
@@ -160,9 +157,11 @@ if ( ! defined( 'MSLS_PLUGIN_VERSION' ) ) {
 		 * @return string
 		 */
 		function get_the_msls( $arr = array() ) {
-			$obj = MslsOutput::init()->set_tags( (array) $arr );
+			$obj = realloc\Msls\Output::init()->set_tags( (array) $arr );
+
 			return( sprintf( '%s', $obj ) );
 		}
+
 		add_shortcode( 'sc_msls', 'get_the_msls' );
 
 		/**
@@ -180,7 +179,7 @@ if ( ! defined( 'MSLS_PLUGIN_VERSION' ) ) {
 		 * @param array $arr
 		 */
 		function the_msls( $arr = array() ) {
-			echo get_the_msls( $arr ); // xss ok
+			echo get_the_msls( $arr );
 		}
 
 		/**
@@ -188,22 +187,24 @@ if ( ! defined( 'MSLS_PLUGIN_VERSION' ) ) {
 		 * rel="alternate"-links in the html-header
 		 */
 		function msls_head() {
-			$blogs  = MslsBlogCollection::instance();
-			$mydata = MslsOptions::create();
+			$mydata = realloc\Msls\Options::create();
+			$blogs  = realloc\Msls\BlogCollection::instance();
+
+			$current_blog = $blogs->get_current_blog_id();
 			foreach ( $blogs->get_objects() as $blog ) {
 				$language = $blog->get_language();
 				$url      = $mydata->get_current_link();
-				$current  = ( $blog->userblog_id == MslsBlogCollection::instance()->get_current_blog_id() );
-				$title = $blog->get_description();
+				$title    = $blog->get_description();
 
-				if ( ! $current ) {
+				if ( $blog->userblog_id != $current_blog ) {
 					switch_to_blog( $blog->userblog_id );
 
-					if ( 'Options' != get_class( $mydata ) && ( is_null( $mydata ) || ! $mydata->has_value( $language ) ) ) {
+					if ( 'realloc\Msls\Options' != get_class( $mydata ) && ( is_null( $mydata ) || ! $mydata->has_value( $language ) ) ) {
 						restore_current_blog();
 						continue;
 					}
-					$url = $mydata->get_permalink( $language );
+
+					$url   = $mydata->get_permalink( $language );
 					$title = $blog->get_description();
 
 					restore_current_blog();
@@ -221,15 +222,17 @@ if ( ! defined( 'MSLS_PLUGIN_VERSION' ) ) {
 					$hreflang = $blog->get_alpha2();
 				}
 
-				printf(
+				$output = sprintf(
 					'<link rel="alternate" hreflang="%s" href="%s" title="%s" />',
 					$hreflang,
 					$url,
 					esc_attr( $title )
 				);
-				echo "\n";
+
+				echo $output, "\n";
 			}
 		}
+
 		add_action( 'wp_head', 'msls_head' );
 
 	}
@@ -240,7 +243,7 @@ if ( ! defined( 'MSLS_PLUGIN_VERSION' ) ) {
 		 * active multisite to work properly.
 		 */
 		function plugin_needs_multisite() {
-			MslsPlugin::message_handler(
+			realloc\Msls\Plugin::message_handler(
 				__( 'The Multisite Language Switcher needs the activation of the multisite-feature for working properly. Please read <a onclick="window.open(this.href); return false;" href="http://codex.wordpress.org/Create_A_Network">this post</a> if you don\'t know the meaning.', 'multisite-language-switcher' )
 			);
 		}

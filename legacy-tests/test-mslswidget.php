@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for MslsWidget
+ * Tests for Widget
  *
  * @author Dennis Ploetner <re@lloc.de>
  * @package Msls

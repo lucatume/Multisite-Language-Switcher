@@ -12,7 +12,7 @@ namespace realloc\Msls;
  * Adding custom filter to posts/pages table.
  * @package Msls
  */
-class CustomFilter extends MslsMain {
+class CustomFilter extends Main {
 
 	/**
 	 * Init hooks
@@ -76,7 +76,7 @@ class CustomFilter extends MslsMain {
 		$id = filter_input( INPUT_GET, 'msls_filter', FILTER_SANITIZE_NUMBER_INT );
 
 		if ( isset( $blogs[ $id ] ) ) {
-			$cache = MslsSqlCacher::init( __CLASS__ )->set_params( __METHOD__ );
+			$cache = SqlCacher::init( __CLASS__ )->set_params( __METHOD__ );
 
 			// load post we need to exclude (already have translation) from search query
 			$posts = $cache->get_results(

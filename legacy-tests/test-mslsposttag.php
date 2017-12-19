@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for MslsPostTag
+ * Tests for PostTag
  *
  * @author Dennis Ploetner <re@lloc.de>
  * @package Msls
@@ -25,7 +25,7 @@ class WP_Test_MslsPostTag extends Msls_UnitTestCase {
 	 */
 	function test_init_method() {
 		$obj = MslsPostTag::init();
-		$this->assertInstanceOf( 'MslsPostTag', $obj );
+		$this->assertInstanceOf( 'PostTag', $obj );
 		return $obj;
 	}
 

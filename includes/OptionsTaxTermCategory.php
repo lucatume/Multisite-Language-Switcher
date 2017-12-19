@@ -1,6 +1,6 @@
 <?php
 /**
- * MslsOptionsTaxTermCategory
+ * OptionsTaxTermCategory
  * @author Dennis Ploetner <re@lloc.de>
  * @since 0.9.8
  */
@@ -11,7 +11,7 @@ namespace realloc\Msls;
  * Category options
  * @package Msls
  */
-class MslsOptionsTaxTermCategory extends MslsOptionsTaxTerm {
+class OptionsTaxTermCategory extends OptionsTaxTerm {
 
 	/**
 	 * Base option

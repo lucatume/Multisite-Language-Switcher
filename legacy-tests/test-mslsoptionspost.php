@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for MslsOptionsPost
+ * Tests for OptionsPost
  *
  * @author Dennis Ploetner <re@lloc.de>
  * @package Msls

@@ -30,7 +30,7 @@ class PostType extends ContentTypes implements RegistryInstance {
 			)
 		);
 
-		$_request = MslsPlugin::get_superglobals( array( 'post_type' ) );
+		$_request = Plugin::get_superglobals( array( 'post_type' ) );
 		if ( '' != $_request['post_type'] ) {
 			$this->request = esc_attr( $_request['post_type'] );
 		}
@@ -56,9 +56,9 @@ class PostType extends ContentTypes implements RegistryInstance {
 	 * @return MslsBlogPostType
 	 */
 	public static function instance() {
-		if ( ! ( $obj = MslsRegistry::get_object( 'MslsBlogPostType' ) ) ) {
+		if ( ! ( $obj = Registry::get_object( 'MslsBlogPostType' ) ) ) {
 			$obj = new self();
-			MslsRegistry::set_object( 'MslsBlogPostType', $obj );
+			Registry::set_object( 'MslsBlogPostType', $obj );
 		}
 		return $obj;
 	}

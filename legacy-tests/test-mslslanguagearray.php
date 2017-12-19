@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for MslsLanguageArray
+ * Tests for LanguageArray
  *
  * @author Dennis Ploetner <re@lloc.de>
  * @package Msls
@@ -13,8 +13,8 @@ class WP_Test_MslsLanguageArray extends Msls_UnitTestCase {
 
 	/**
 	 * Verify the get_val-method
-	 * @covers MslsLanguageArray::__construct
-	 * @covers MslsLanguageArray::get_val
+	 * @covers LanguageArray::__construct
+	 * @covers LanguageArray::get_val
 	 */
 	function test_get_val_method() {
 		$arr = array(

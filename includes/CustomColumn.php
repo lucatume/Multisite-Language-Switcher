@@ -14,7 +14,7 @@ namespace realloc\Msls;
  *
  * @package Msls
  */
-class CustomColumn extends MslsMain {
+class CustomColumn extends Main {
 
 	/**
 	 * Init hooks

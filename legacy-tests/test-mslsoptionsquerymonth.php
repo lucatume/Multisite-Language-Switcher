@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for MslsOptionsQueryMonth
+ * Tests for OptionsQueryMonth
  *
  * @author Dennis Ploetner <re@lloc.de>
  * @package Msls

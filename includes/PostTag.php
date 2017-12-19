@@ -1,6 +1,6 @@
 <?php
 /**
- * MslsPostTag
+ * PostTag
  * @author Dennis Ploetner <re@lloc.de>
  * @since 0.9.8
  */
@@ -11,12 +11,12 @@ namespace realloc\Msls;
  * Post Tag
  * @package Msls
  */
-class MslsPostTag extends MslsMain {
+class PostTag extends Main {
 
 	/**
 	 * Init
 	 *
-	 * @return MslsPostTag
+	 * @return PostTag
 	 */
 	public static function init() {
 		$options = Options::instance();
@@ -26,7 +26,7 @@ class MslsPostTag extends MslsMain {
 			$obj     = new self( $options, $blogs );
 		}
 		else {
-			$obj = new MslsPostTagClassic( $options, $blogs );
+			$obj = new PostTagClassic( $options, $blogs );
 		}
 
 		$taxonomy = ContentTypes::create()->acl_request();
@@ -47,7 +47,7 @@ class MslsPostTag extends MslsMain {
 	 * the requested search-term and then die silently
 	 */
 	public static function suggest() {
-		$json = new MslsJson;
+		$json = new Json;
 
 		if ( filter_has_var( INPUT_POST, 'blog_id' ) ) {
 			switch_to_blog(
@@ -149,7 +149,7 @@ class MslsPostTag extends MslsMain {
 		$term_id = ( is_object( $tag ) ? $tag->term_id : 0 );
 		$blogs   = BlogCollection::instance()->get();
 		if ( $blogs ) {
-			$my_data = MslsOptionsTax::create( $term_id );
+			$my_data = OptionsTax::create( $term_id );
 			$type    = ContentTypes::create()->get_request();
 
 			printf(
@@ -195,7 +195,7 @@ class MslsPostTag extends MslsMain {
 	 */
 	public function set( $term_id ) {
 		if ( ContentTypes::create()->acl_request() ) {
-			$this->save( $term_id, 'MslsOptionsTax' );
+			$this->save( $term_id, 'OptionsTax' );
 		}
 	}
 

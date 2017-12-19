@@ -1,6 +1,6 @@
 <?php
 /**
- * MslsOutput
+ * Output
  * @author Dennis Ploetner <re@lloc.de>
  * @since 0.9.8
  */
@@ -11,7 +11,7 @@ namespace realloc\Msls;
  * Output in the frontend
  * @package Msls
  */
-class MslsOutput extends MslsMain {
+class Output extends Main {
 
 	/**
 	 * Holds the format for the output
@@ -140,7 +140,7 @@ class MslsOutput extends MslsMain {
 	 *
 	 * @param array $arr
 	 *
-	 * @return MslsOutput
+	 * @return Output
 	 */
 	public function set_tags( array $arr = array() ) {
 		$this->tags = wp_parse_args( $this->get_tags(), $arr );

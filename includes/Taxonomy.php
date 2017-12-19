@@ -2,7 +2,7 @@
 /**
  * Taxonomy
  * @author Dennis Ploetner <re@lloc.de>
- * @since 0.9.8
+ * @since 2.0
  */
 
 namespace realloc\Msls;
@@ -32,7 +32,7 @@ class Taxonomy extends ContentTypes implements RegistryInstance {
 			)
 		);
 
-		$_request = MslsPlugin::get_superglobals( array( 'taxonomy', 'post_type' ) );
+		$_request = Plugin::get_superglobals( array( 'taxonomy', 'post_type' ) );
 		if ( '' != $_request['taxonomy'] ) {
 			$this->request   = esc_attr( $_request['taxonomy'] );
 			$this->post_type = esc_attr( $_request['post_type'] );
@@ -85,9 +85,9 @@ class Taxonomy extends ContentTypes implements RegistryInstance {
 	 * @return Taxonomy
 	 */
 	public static function instance() {
-		if ( ! ( $obj = MslsRegistry::get_object( 'Taxonomy' ) ) ) {
+		if ( ! ( $obj = Registry::get_object( 'Taxonomy' ) ) ) {
 			$obj = new self();
-			MslsRegistry::set_object( 'Taxonomy', $obj );
+			Registry::set_object( 'Taxonomy', $obj );
 		}
 		return $obj;
 	}

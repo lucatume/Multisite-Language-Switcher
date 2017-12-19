@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for MslsOptionsQuery
+ * Tests for OptionsQuery
  *
  * @author Dennis Ploetner <re@lloc.de>
  * @package Msls

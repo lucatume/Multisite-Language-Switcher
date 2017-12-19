@@ -1,6 +1,6 @@
 <?php
 /**
- * MslsPostTagClassic
+ * PostTagClassic
  * @author Dennis Ploetner <re@lloc.de>
  * @since 0.9.9
  */
@@ -11,7 +11,7 @@ namespace realloc\Msls;
  * Post Tag Clasic
  * @package Msls
  */
-class MslsPostTagClassic extends MslsPostTag {
+class PostTagClassic extends PostTag {
 
 	/**
 	 * Add the input fields to the add-screen of the taxonomies
@@ -61,10 +61,10 @@ class MslsPostTagClassic extends MslsPostTag {
 	 *
 	 * @param Blog $blog
 	 * @param string $type
-	 * @param MslsOptionsTax $mydata
+	 * @param OptionsTax $mydata
 	 * @param string $item_format
 	 */
-	public function print_option( Blog $blog, $type, MslsOptionsTax $mydata, $item_format ) {
+	public function print_option( Blog $blog, $type, OptionsTax $mydata, $item_format ) {
 		switch_to_blog( $blog->userblog_id );
 
 		$language = $blog->get_language();
@@ -104,7 +104,7 @@ class MslsPostTagClassic extends MslsPostTag {
 
 		if ( $blogs ) {
 			$term_id = ( is_object( $tag ) ? $tag->term_id : 0 );
-			$mydata  = MslsOptionsTax::create( $term_id );
+			$mydata  = OptionsTax::create( $term_id );
 			$type    = ContentTypes::create()->get_request();
 
 			printf(

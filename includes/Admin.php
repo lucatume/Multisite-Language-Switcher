@@ -11,7 +11,7 @@ namespace realloc\Msls;
  * Administration of the options
  * @package Msls
  */
-class Admin extends MslsMain {
+class Admin extends Main {
 
 	/**
 	 * Init hooks
@@ -44,6 +44,7 @@ class Admin extends MslsMain {
 	 */
 	public function __call( $method, $args ) {
 		$parts = explode( '_', $method, 2 );
+
 		if ( 2 == count( $parts ) ) {
 			switch ( $parts[0] ) {
 				case 'rewrite':
@@ -76,7 +77,7 @@ class Admin extends MslsMain {
 			);
 		}
 
-		return MslsPlugin::message_handler( $message, 'updated fade' );
+		return Plugin::message_handler( $message, 'updated fade' );
 	}
 
 	/**

@@ -1,6 +1,6 @@
 <?php
 /**
- * MslsSqlCacher
+ * SqlCacher
  * @author Dennis Ploetner <re@lloc.de>
  * @since 1.0
  */
@@ -21,7 +21,7 @@ namespace realloc\Msls;
  * @property int $siteid
  * @package Msls
  */
-class MslsSqlCacher {
+class SqlCacher {
 
 	/**
 	 * Database object
@@ -54,8 +54,10 @@ class MslsSqlCacher {
 	/**
 	 * Factory
 	 * @uses $wpdb
+	 *
 	 * @param string $caller
-	 * @return MslsSqlCacher
+	 *
+	 * @return SqlCacher
 	 */
 	public static function init( $caller ) {
 		global $wpdb;
@@ -64,8 +66,10 @@ class MslsSqlCacher {
 
 	/**
 	 * Set params
+	 *
 	 * @param mixed $params
-	 * @return MslsSqlCacher
+	 *
+	 * @return SqlCacher
 	 */
 	public function set_params( $params ) {
 		$this->params = $params;

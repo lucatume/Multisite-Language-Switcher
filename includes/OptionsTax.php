@@ -1,6 +1,6 @@
 <?php
 /**
- * MslsOptionsTax
+ * OptionsTax
  * @author Dennis Ploetner <re@lloc.de>
  * @since 0.9.8
  */
@@ -11,7 +11,7 @@ namespace realloc\Msls;
  * Taxonomy options
  * @package Msls
  */
-class MslsOptionsTax extends Options {
+class OptionsTax extends Options {
 
 	/**
 	 * Separator
@@ -30,7 +30,7 @@ class MslsOptionsTax extends Options {
 	 *
 	 * @param int $id
 	 *
-	 * @return MslsOptionsTax
+	 * @return OptionsTax
 	 */
 	public static function create( $id = 0 ) {
 		if ( is_admin() ) {
@@ -45,13 +45,13 @@ class MslsOptionsTax extends Options {
 
 		switch ( $req ) {
 			case 'category':
-				$options = new MslsOptionsTaxTermCategory( $id );
+				$options = new OptionsTaxTermCategory( $id );
 				break;
 			case 'post_tag':
-				$options = new MslsOptionsTaxTerm( $id );
+				$options = new OptionsTaxTerm( $id );
 				break;
 			default:
-				$options = new MslsOptionsTax( $id );
+				$options = new OptionsTax( $id );
 		}
 
 		if ( $req ) {

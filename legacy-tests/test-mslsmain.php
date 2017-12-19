@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for MslsMain
+ * Tests for Main
  *
  * @author Dennis Ploetner <re@lloc.de>
  * @package Msls
